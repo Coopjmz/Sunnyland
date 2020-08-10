@@ -74,9 +74,9 @@
     <Compile Include="Assets\Scripts\Levels\Props\House.cs" />
     <Compile Include="Assets\Scripts\Levels\UI\Menus\GameOver.cs" />
     <Compile Include="Assets\Scripts\Levels\UI\UI.cs" />
+    <Compile Include="Assets\Scripts\Levels\Entities\Enemies\Opossum.cs" />
     <Compile Include="Assets\Scripts\Levels\Entities\Entity.cs" />
     <Compile Include="Assets\Scripts\Levels\Entities\Enemies\Eagle.cs" />
-    <Compile Include="Assets\Scripts\Levels\Entities\Enemies\Opossum.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
