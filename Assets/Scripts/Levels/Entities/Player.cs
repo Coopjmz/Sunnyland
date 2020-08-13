@@ -156,18 +156,22 @@ namespace Levels
 
         protected override void MovementUpdate()
 	    {
+            //Get axis input
+            float xAxis = GetAxis("Horizontal");
+            float yAxis = GetAxis("Vertical");
+
             //If player moves
-            if(GetAxis("Horizontal") != 0f)
-                Move();
+            if(xAxis != 0f)
+                Move(xAxis);
 
             //If player climbs
-            if(climbing && GetAxis("Vertical") != 0f)
-                Climb();
+            if(climbing && yAxis != 0f)
+                Climb(yAxis);
             //If player attempts to climb
             else if(ladder &&
-                ((GetAxis("Vertical") > 0f && !boxCollider.IsTouchingLayers(ladderPlatform)) ||
-                 (GetAxis("Vertical") < 0f && (boxCollider.IsTouchingLayers(ladderPlatform) ||
-                                              !boxCollider.IsTouchingLayers(ground)))))
+                ((yAxis > 0f && !boxCollider.IsTouchingLayers(ladderPlatform)) ||
+                 (yAxis < 0f && (boxCollider.IsTouchingLayers(ladderPlatform) ||
+                                !boxCollider.IsTouchingLayers(ground)))))
                 ToggleClimbing();
             //If player Jumps
             else if(GetButtonDown("Jump") && Abs(rigidBody.velocity.y) < EPSILON)
@@ -221,15 +225,15 @@ namespace Levels
             else GameOver();
         }
 
-        void Move()
+        void Move(float xAxis)
         {
-            //Player scale
-            sbyte scale = (sbyte)(GetAxis("Horizontal") / Abs(GetAxis("Horizontal")));
+            //Player direction
+            sbyte direction = (sbyte)(xAxis / Abs(xAxis));
 
             //Set scale and X-axis velocity
             transform.localScale =
-                new Vector3(scale * Abs(transform.localScale.x), transform.localScale.y);
-            rigidBody.velocity = new Vector2(scale * speed, rigidBody.velocity.y);
+                new Vector3(direction * Abs(transform.localScale.x), transform.localScale.y);
+            rigidBody.velocity = new Vector2(direction * speed, rigidBody.velocity.y);
 
             //If player was climbing
             if(climbing)
@@ -283,12 +287,13 @@ namespace Levels
                                         RigidbodyConstraints2D.FreezeRotation;
 
                 //Set linear drag and gravity scale
-                rigidBody.drag *= 2f;
+                rigidBody.drag = 20f;
                 rigidBody.gravityScale = 0f;
             }
             else
 			{
-                //Set player constraints
+                //Set player velocity and constraints
+                rigidBody.velocity = new Vector2(0f, 0f);
                 rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
                 //Set linear drag and gravity scale
@@ -297,10 +302,10 @@ namespace Levels
             }
         }
 
-        void Climb()
+        void Climb(float yAxis)
 		{
             //If player is at the bottom of the ladder
-            if(GetAxis("Vertical") < 0f && boxCollider.IsTouchingLayers(ground))
+            if(yAxis < 0f && boxCollider.IsTouchingLayers(ground))
 			{
                 //Get off the ladder
                 ToggleClimbing();
@@ -308,7 +313,7 @@ namespace Levels
             }
 
             //Player direction
-            sbyte direction = (sbyte)(GetAxis("Vertical") / Abs(GetAxis("Vertical")));
+            sbyte direction = (sbyte)(yAxis / Abs(yAxis));
 
             //Set Y-axis velocity
             rigidBody.velocity = new Vector2(0f, direction * climbSpeed);
