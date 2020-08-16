@@ -766,7 +766,7 @@ GameObject:
   - component: {fileID: 1380628649}
   - component: {fileID: 1380628651}
   m_Layer: 0
-  m_Name: Child fox
+  m_Name: Child Fox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
