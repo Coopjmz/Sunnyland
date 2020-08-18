@@ -18,8 +18,8 @@ class SceneLoader: MonoBehaviour
     //Variables (initialized from Unity)
     [SerializeField] string nextScene = default;
 
-	//Methods
-	void Start()
+    //Methods
+    void Start()
 	{
         //Initialize next scene
         _nextScene = nextScene;
