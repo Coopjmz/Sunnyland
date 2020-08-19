@@ -116,9 +116,8 @@ namespace Levels
             //If player interacts with an enemy
             if(collision.gameObject.CompareTag("Enemy"))
             {
-                Collider2D jumpOnEnemy =
-                    Physics2D.BoxCast(boxCollider.bounds.center - new Vector3(0f, boxCollider.bounds.extents.y),
-                    new Vector2(boxCollider.bounds.size.x, 1f), 0f, Vector2.down, 0f, enemy).collider;
+                Collider2D jumpOnEnemy = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size,
+                    0f, Vector2.down, .5f, enemy).collider;
 
                 //If the player jumps on one, or has power up
                 if(jumpOnEnemy || powerUp)
@@ -293,7 +292,7 @@ namespace Levels
             else
 			{
                 //Set player velocity and constraints
-                rigidBody.velocity = new Vector2(0f, 0f);
+                rigidBody.velocity = Vector2.zero;
                 rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
                 //Set linear drag and gravity scale

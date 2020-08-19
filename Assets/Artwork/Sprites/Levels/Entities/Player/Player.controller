@@ -353,19 +353,19 @@ AnimatorStateMachine:
     m_Position: {x: -100, y: -270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5730389411481098714}
-    m_Position: {x: -100, y: -70, z: 0}
+    m_Position: {x: 100, y: -370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6732998882243142837}
     m_Position: {x: -500, y: -370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8620099569719637876}
-    m_Position: {x: 300, y: -270, z: 0}
+    m_Position: {x: -100, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3532862462947216567}
-    m_Position: {x: 400, y: -170, z: 0}
+    m_Position: {x: 300, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8531196603944139399}
-    m_Position: {x: 300, y: -60, z: 0}
+    m_Position: {x: 100, y: 30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1046876119239007203}
     m_Position: {x: 100, y: -170, z: 0}
@@ -451,13 +451,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Death
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer

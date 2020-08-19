@@ -46,7 +46,7 @@ namespace Levels
                     {"Sign", signText}
                 };
 
-                //Initialize screens
+                //Initialize objects
                 objects = new Dictionary<string, GameObject>
                 {
                     {"Stats", stats},

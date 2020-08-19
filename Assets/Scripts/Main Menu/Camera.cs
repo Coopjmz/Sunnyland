@@ -25,7 +25,7 @@ namespace MainMenu
 
             if(transform.position.x < end)
                 //Move camera right
-                transform.position = new Vector3(transform.position.x + speed, transform.position.y, -10f);
+                transform.Translate(Vector3.right * speed);
             //Reset camera
             else transform.position = new Vector3(start, transform.position.y, -10f);
         }
