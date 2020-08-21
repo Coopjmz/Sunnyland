@@ -7,7 +7,7 @@ namespace Levels
 		//Events
 		public void Enter()
 		{
-			Game.Reset();
+			Game.Restart();
 			SceneLoader.Load(Scene.Next);
 		}
 	}

@@ -13,7 +13,7 @@
 		public void PlayAgain()
         {
             //Restarts the game
-            Game.Reset();
+            Game.Restart();
             SceneLoader.Load(Scene.FirstLevel);
         }
     }

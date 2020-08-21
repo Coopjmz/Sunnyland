@@ -4,6 +4,10 @@ namespace Levels
 {
     static class Game
     {
+        //Constants
+        internal const float DRAG = 5f;
+        internal const float GRAVITY = 10f;
+        
         //Static properties
         internal static bool IsInputEnabled { get; set; } = true;
         internal static bool IsTutorialEnabled { get; private set; } = true;
@@ -29,7 +33,7 @@ namespace Levels
             UI.Display("Game Over");
         }
 
-        internal static void Reset()
+        internal static void Restart()
         {
             IsTutorialEnabled = true;
             IsGameOver = false;

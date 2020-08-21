@@ -6,7 +6,7 @@ namespace MainMenu
 {
     class UI: MonoBehaviour
     {
-		//Objects
+		//Menus
 		[SerializeField] GameObject mainMenu = default;
 		[SerializeField] GameObject credits = default;
 		static Dictionary<string, GameObject> objects;

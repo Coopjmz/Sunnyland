@@ -7,7 +7,7 @@ class Menu: MonoBehaviour
 	//Events
 	public void ToMainMenu()
 	{
-		Game.Reset();
+		Game.Restart();
 		SceneLoader.Load(Scene.MainMenu);
 	}
 

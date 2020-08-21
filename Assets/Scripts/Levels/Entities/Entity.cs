@@ -20,6 +20,9 @@ namespace Levels
         //Sound effects
         protected Dictionary<string, AudioSource> sfx;
 
+        //Properties
+        internal bool IsAlive => boxCollider.isActiveAndEnabled;
+
         //Methods
         protected void Start()
         {
@@ -28,9 +31,6 @@ namespace Levels
             boxCollider = GetComponent<BoxCollider2D>();
             animator = GetComponent<Animator>();
         }
-
-        //Internal properties
-        internal bool IsAlive => boxCollider.isActiveAndEnabled;
 
         //Abstract methods
         protected abstract void MovementUpdate();
