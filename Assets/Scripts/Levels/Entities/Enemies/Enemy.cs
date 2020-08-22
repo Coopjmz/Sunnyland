@@ -29,6 +29,7 @@ namespace Levels
         internal override void Kill()
         {
             //Death animation
+            enabled = false;
             rigidBody.bodyType = RigidbodyType2D.Static;
             boxCollider.enabled = false;
             animator.SetTrigger("Death");

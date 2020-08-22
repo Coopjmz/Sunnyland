@@ -21,13 +21,16 @@ namespace Levels
         [SerializeField] float rightBound = default;
 
         //Variables
-        sbyte scale = 1; //Frog is facing left (default)
+        sbyte scale;
 
         //Methods
         new void Start()
         {
             //Initialize components and sound effects from base class
             base.Start();
+
+            //Initialize variables
+            scale = (sbyte)transform.localScale.x;
 
             //Add sound effects
             sfx.Add("Jump", GetComponents<AudioSource>()[1]);
@@ -57,37 +60,26 @@ namespace Levels
         //Events
         protected override void MovementUpdate()
         {
-            if(IsAlive)
+            //If frog is facing left is at or past the left border
+            if(scale == 1 && transform.position.x <= leftBound)
             {
-                //If frog is facing left
-                if(scale == 1)
-                {
-                    //If frog is at or past the left border
-                    if(transform.position.x <= leftBound)
-                    {
-                        //Turn right
-                        scale = -1;
-                        transform.localScale = new Vector3(scale, 1f);
-                    }
-                }
-                //If frog is facing right
-                else if(scale == -1)
-                {
-                    //If frog is at or past the right border
-                    if(transform.position.x >= rightBound)
-                    {
-                        //Turn left
-                        scale = 1;
-                        transform.localScale = new Vector3(scale, 1f);
-                    }
-                }
-
-                //Set jump direction and Y-axis velocity
-                rigidBody.velocity = new Vector2(-scale * speed, jumpForce);
-
-                //Play jump sound
-                sfx["Jump"].Play();
+                //Turn right
+                scale = -1;
+                transform.localScale = new Vector3(scale, 1f);
             }
+            //If frog is facing right is at or past the right border
+            else if(scale == -1 && transform.position.x >= rightBound)
+            {
+                //Turn left
+                scale = 1;
+                transform.localScale = new Vector3(scale, 1f);
+            }
+
+            //Set jump direction and Y-axis velocity
+            rigidBody.velocity = new Vector2(-scale * speed, jumpForce);
+
+            //Play jump sound
+            sfx["Jump"].Play();
         }
     }
 }

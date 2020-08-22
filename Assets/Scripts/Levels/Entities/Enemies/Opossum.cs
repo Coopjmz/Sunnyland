@@ -9,40 +9,39 @@ namespace Levels
         [SerializeField] float rightBound = default;
 
         //Variables
-        sbyte scale = 1; //Opossum is facing left (default)
+        sbyte scale;
+
+        new void Start()
+		{
+            //Initialize variables and components from base class
+            base.Start();
+
+            //Initialize variables
+            scale = (sbyte)transform.localScale.x;
+        }
 
 		//Methods
         void Update()
         {
-            //While opossum is alive
-            if(IsAlive)
-                //Update opossum
-                MovementUpdate();
+            //Update opossum
+            MovementUpdate();
         }
 
         protected override void MovementUpdate()
         {
-            //If opossum is going left
-            if(scale == 1)
+            //If opossum is going left and is at or past the left border
+            if(scale == 1 && transform.position.x <= leftBound)
             {
-                //If opossum is at or past the left border
-                if(transform.position.x <= leftBound)
-                {
-                    //Turn right
-                    scale = -1;
-                    transform.localScale = new Vector3(scale, 1f);
-                }
+                //Turn right
+                scale = -1;
+                transform.localScale = new Vector3(scale, 1f);
             }
-            //If opossum is going right
-            else if(scale == -1)
+            //If opossum is going right is at or past the right border
+            else if(scale == -1 && transform.position.x >= rightBound)
             {
-                //If opossum is at or past the right border
-                if(transform.position.x >= rightBound)
-                {
-                    //Turn left
-                    scale = 1;
-                    transform.localScale = new Vector3(scale, 1f);
-                }
+                //Turn left
+                scale = 1;
+                transform.localScale = new Vector3(scale, 1f);
             }
             
             //Set scale and X-axis velocity

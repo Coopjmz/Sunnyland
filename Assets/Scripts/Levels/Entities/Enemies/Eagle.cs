@@ -25,8 +25,8 @@ namespace Levels
 
 		void Update()
         {
-            //While eagle and player are alive
-            if(IsAlive && player.IsAlive)
+            //While the player is alive
+            if(player.IsAlive)
                 //Update eagle
                 MovementUpdate();
         }

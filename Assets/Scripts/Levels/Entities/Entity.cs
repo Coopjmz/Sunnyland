@@ -19,10 +19,7 @@ namespace Levels
 
         //Sound effects
         protected Dictionary<string, AudioSource> sfx;
-
-        //Properties
-        internal bool IsAlive => boxCollider.isActiveAndEnabled;
-
+        
         //Methods
         protected void Start()
         {

@@ -51,6 +51,9 @@ namespace Levels
         [SerializeField] LayerMask ladderPlatform = default;
         [SerializeField] LayerMask enemy = default;
 
+        //Properties
+        internal bool IsAlive => boxCollider.isActiveAndEnabled;
+
         //Methods
         new void Start()
 	    {
