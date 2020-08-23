@@ -39,8 +39,11 @@ namespace Levels
         [SerializeField] float powerUpTime = 10f;
 
         //Variables
-        bool crouching, climbing, powerUp;
+        bool jumping, crouching, climbing, powerUp;
         byte cherries;
+
+        //Axes
+        sbyte xAxis, yAxis;
 
         //Components
         SpriteRenderer spriteRenderer;
@@ -52,6 +55,9 @@ namespace Levels
         [SerializeField] LayerMask enemy = default;
 
         //Properties
+        bool TouchingGround => Abs(rigidBody.velocity.y) < EPSILON;
+
+        //Internal properties
         internal bool IsAlive => boxCollider.isActiveAndEnabled;
 
         //Methods
@@ -103,7 +109,7 @@ namespace Levels
             //If player isn't near a ladder
             if(collider.CompareTag("Ladder"))
 			{
-                if(climbing) ToggleClimbing();
+                if(climbing) SetClimbing(false);
                 ladder = null;
             } 
         }
@@ -137,7 +143,7 @@ namespace Levels
             {
                 //Update player
                 if(IsInputEnabled)
-                    MovementUpdate();
+                     MovementUpdate();
                 AnimationUpdate();
 
                 //Check if the player is out of bounds
@@ -150,34 +156,133 @@ namespace Levels
                 DisableTutorial();
         }
 
-        protected override void MovementUpdate()
+		void FixedUpdate()
+		{
+            //Rigidbody physics update
+            if(IsAlive)
+			{
+                if(xAxis != 0)
+                    Move();
+
+                if(jumping)
+			    {
+                    Jump();
+                    jumping = false;
+			    }
+                else if(climbing && yAxis != 0)
+                    Climb();
+			}
+        }
+
+		protected override void MovementUpdate()
 	    {
-            //Get axis input
-            sbyte xAxis = (sbyte)GetAxisRaw("Horizontal");
-            sbyte yAxis = (sbyte)GetAxisRaw("Vertical");
+            //Get axes input
+            xAxis = (sbyte)GetAxisRaw("Horizontal");
+            yAxis = (sbyte)GetAxisRaw("Vertical");
 
-            //If player moves
-            if(xAxis != 0)
-                Move(xAxis);
+            if(!climbing)
+			{
+                //If player attempts to climb
+                if(ladder &&
+                 ((yAxis == 1 && !boxCollider.IsTouchingLayers(ladderPlatform)) ||
+                  (yAxis == -1 && (boxCollider.IsTouchingLayers(ladderPlatform) ||
+                                  !boxCollider.IsTouchingLayers(ground)))))
+                    SetClimbing(true);
+                //If player jumps
+                else if(GetButtonDown("Jump") && TouchingGround)
+                    jumping = true;
+                //If player crouches
+                else if(GetButton("Crouch") && TouchingGround)
+                    SetCrouching(true);
+                //If player stands up
+                else if(GetButtonUp("Crouch"))
+                    SetCrouching(false);
+			}
+        }
 
-            //If player climbs
-            if(climbing && yAxis != 0)
-                Climb(yAxis);
-            //If player attempts to climb
-            else if(ladder &&
-                ((yAxis == 1 && !boxCollider.IsTouchingLayers(ladderPlatform)) ||
-                 (yAxis == -1 && (boxCollider.IsTouchingLayers(ladderPlatform) ||
-                                !boxCollider.IsTouchingLayers(ground)))))
-                ToggleClimbing();
-            //If player Jumps
-            else if(GetButtonDown("Jump") && Abs(rigidBody.velocity.y) < EPSILON)
-                Jump();
-            //If player crouches
-            else if(GetButton("Crouch") && Abs(rigidBody.velocity.y) < EPSILON)
-                Crouch(true);
-            //If player stands up
-            else if(GetButtonUp("Crouch"))
-                Crouch(false);
+        void Move()
+        {
+            //Set scale and X-axis velocity
+            transform.localScale =
+                new Vector3(xAxis * Abs(transform.localScale.x), transform.localScale.y);
+            rigidBody.velocity = new Vector2(xAxis * speed, rigidBody.velocity.y);
+
+            //If player was climbing
+            if(climbing)
+                //Stop climbing
+                SetClimbing(false);
+        }
+
+        void Jump(bool sound = true)
+        {
+            //Set Y-axis velocity
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
+
+            if(sound)
+                //Play jump sound
+                sfx["Jump"].Play();
+        }
+
+        void Climb()
+        {
+            //If player is at the bottom of the ladder
+            if(yAxis == -1 && boxCollider.IsTouchingLayers(ground))
+                //Get off the ladder
+                SetClimbing(false);
+            else
+                //Set Y-axis velocity
+                rigidBody.velocity = new Vector2(0f, yAxis * climbSpeed);
+        }
+
+        void SetCrouching(bool enabled)
+        {
+            if(enabled && !crouching)
+			{
+                //Decrease movement speed and jump force
+                speed /= 2f;
+                jumpForce /= 2f;
+            }
+            else if(!enabled && crouching)
+            {
+                //Increse movement speed and jump force
+                speed *= 2f;
+                jumpForce *= 2f;
+            }
+
+            crouching = enabled;
+        }
+
+        void SetClimbing(bool enabled)
+        {
+            if(enabled && !climbing)
+			{
+                //Disable crouching
+                if(crouching) SetCrouching(false);
+
+                //Set player position and constraints
+                transform.position = new Vector3(ladder.position.x, transform.position.y);
+                rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX |
+                                        RigidbodyConstraints2D.FreezeRotation;
+
+                //Set linear drag and gravity scale
+                rigidBody.drag = 20f;
+                rigidBody.gravityScale = 0f;
+            }
+            else if(!enabled && climbing)
+			{
+                //Set player velocity and constraints
+                rigidBody.velocity = Vector2.zero;
+                rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+                //Set linear drag and gravity scale
+                rigidBody.drag = DRAG;
+                rigidBody.gravityScale = GRAVITY;
+            }
+
+            //Toggle ladder platform
+            ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !enabled;
+
+            climbing = enabled;
         }
 
 		void AnimationUpdate()
@@ -219,94 +324,6 @@ namespace Levels
                 //Respawn player
                 SceneLoader.Load(Scene.Active);
             else GameOver();
-        }
-
-        void Move(sbyte xAxis)
-        {
-            //Set scale and X-axis velocity
-            transform.localScale =
-                new Vector3(xAxis * Abs(transform.localScale.x), transform.localScale.y);
-            rigidBody.velocity = new Vector2(xAxis * speed, rigidBody.velocity.y);
-
-            //If player was climbing
-            if(climbing)
-                //Stop climbing
-                ToggleClimbing();
-        }
-
-		void Crouch(bool enabled)
-        {
-            //Decrease movement speed and jump height
-            if(enabled && !crouching)
-			{
-                speed /= 2f;
-                jumpForce /= 2f;
-            }
-            //Increse movement speed and jump height
-            else if(!enabled && crouching)
-            {
-                speed *= 2f;
-                jumpForce *= 2f;
-            }
-
-            crouching = enabled;
-        }
-
-        void Jump(bool sound = true)
-        {
-            //Set Y-axis velocity
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
-
-            if(sound)
-                //Play jump sound
-                sfx["Jump"].Play();
-        }
-
-        void ToggleClimbing()
-        {
-            climbing = !climbing;
-
-            //Toggle ladder platform
-            ladder.GetChild(0).GetComponentInChildren<BoxCollider2D>().enabled = !climbing;
-
-            if(climbing)
-			{
-                //Disable crouching
-                Crouch(false);
-
-                //Set player position and constraints
-                transform.position = new Vector3(ladder.position.x, transform.position.y);
-                rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX |
-                                        RigidbodyConstraints2D.FreezeRotation;
-
-                //Set linear drag and gravity scale
-                rigidBody.drag = 20f;
-                rigidBody.gravityScale = 0f;
-            }
-            else
-			{
-                //Set player velocity and constraints
-                rigidBody.velocity = Vector2.zero;
-                rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-                //Set linear drag and gravity scale
-                rigidBody.drag = DRAG;
-                rigidBody.gravityScale = GRAVITY;
-            }
-        }
-
-        void Climb(sbyte yAxis)
-		{
-            //If player is at the bottom of the ladder
-            if(yAxis == -1 && boxCollider.IsTouchingLayers(ground))
-			{
-                //Get off the ladder
-                ToggleClimbing();
-                return;
-            }
-
-            //Set Y-axis velocity
-            rigidBody.velocity = new Vector2(0f, yAxis * climbSpeed);
         }
 
         //Events

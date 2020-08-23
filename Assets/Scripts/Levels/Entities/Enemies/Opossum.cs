@@ -21,7 +21,7 @@ namespace Levels
         }
 
 		//Methods
-        void Update()
+        void FixedUpdate()
         {
             //Update opossum
             MovementUpdate();

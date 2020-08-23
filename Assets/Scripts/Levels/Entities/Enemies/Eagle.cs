@@ -23,7 +23,7 @@ namespace Levels
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 		}
 
-		void Update()
+		void FixedUpdate()
         {
             //While the player is alive
             if(player.IsAlive)
