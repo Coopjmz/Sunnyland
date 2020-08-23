@@ -10,7 +10,7 @@ using static Levels.Game;
 namespace Levels
 {
 	class Player: Entity
-    {
+	{
         //Player states
         enum State
         {
@@ -62,7 +62,7 @@ namespace Levels
 
         //Methods
         new void Start()
-	    {
+        {
             //Initialize components from base class
             base.Start();
             
@@ -105,7 +105,7 @@ namespace Levels
         }
 
         void OnTriggerExit2D(Collider2D collider)
-		{
+        {
             //If player isn't near a ladder
             if(collider.CompareTag("Ladder"))
 			{
@@ -158,47 +158,47 @@ namespace Levels
 
 		void FixedUpdate()
 		{
-            //Rigidbody physics update
-            if(IsAlive)
-			{
-                if(xAxis != 0)
-                    Move();
+			//Rigidbody physics update
+			if(IsAlive)
+		    {
+		    	if(xAxis != 0)
+		    		Move();
 
-                if(jumping)
-			    {
-                    Jump();
-                    jumping = false;
-			    }
-                else if(climbing && yAxis != 0)
-                    Climb();
-			}
-        }
+	                if(jumping)
+	                {
+	                    Jump();
+	                    jumping = false;
+	                }
+	                else if(climbing && yAxis != 0)
+	                    Climb();
+	        }
+	    }
 
 		protected override void MovementUpdate()
-	    {
-            //Get axes input
-            xAxis = (sbyte)GetAxisRaw("Horizontal");
-            yAxis = (sbyte)GetAxisRaw("Vertical");
+		{
+	        //Get axes input
+	        xAxis = (sbyte)GetAxisRaw("Horizontal");
+	        yAxis = (sbyte)GetAxisRaw("Vertical");
 
-            if(!climbing)
+	        if(!climbing)
 			{
-                //If player attempts to climb
-                if(ladder &&
-                 ((yAxis == 1 && !boxCollider.IsTouchingLayers(ladderPlatform)) ||
-                  (yAxis == -1 && (boxCollider.IsTouchingLayers(ladderPlatform) ||
-                                  !boxCollider.IsTouchingLayers(ground)))))
-                    SetClimbing(true);
-                //If player jumps
-                else if(GetButtonDown("Jump") && TouchingGround)
-                    jumping = true;
-                //If player crouches
-                else if(GetButton("Crouch") && TouchingGround)
-                    SetCrouching(true);
-                //If player stands up
-                else if(GetButtonUp("Crouch"))
-                    SetCrouching(false);
+	            //If player attempts to climb
+	            if(ladder &&
+	             ((yAxis == 1 && !boxCollider.IsTouchingLayers(ladderPlatform)) ||
+	              (yAxis == -1 && (boxCollider.IsTouchingLayers(ladderPlatform) ||
+	                              !boxCollider.IsTouchingLayers(ground)))))
+	                SetClimbing(true);
+	            //If player jumps
+	            else if(GetButtonDown("Jump") && TouchingGround)
+	                jumping = true;
+	            //If player crouches
+	            else if(GetButton("Crouch") && TouchingGround)
+	                SetCrouching(true);
+	            //If player stands up
+	            else if(GetButtonUp("Crouch"))
+	                SetCrouching(false);
 			}
-        }
+		}
 
         void Move()
         {
