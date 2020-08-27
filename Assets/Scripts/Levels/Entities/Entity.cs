@@ -1,36 +1,32 @@
-﻿using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Levels
 {
-    abstract class Entity: MonoBehaviour
-    {
-        //Constants
-        protected const float EPSILON = .01f;
+	[RequireComponent(typeof(SpriteRenderer))]
+	[RequireComponent(typeof(Rigidbody2D))]
+	[RequireComponent(typeof(BoxCollider2D))]
+	[RequireComponent(typeof(Animator))]
+	abstract class Entity : MonoBehaviour
+	{
+		[Header("Stats")]
+		[SerializeField] private protected float speed = 5f;
 
-        //Variables (initialized from Unity)
-        [SerializeField] protected float speed = 5f;
+		private protected const float EPSILON = .01f;
 
-        //Components
-        protected Rigidbody2D rigidBody;
-        protected BoxCollider2D boxCollider;
-        protected Animator animator;
+		private protected SpriteRenderer _spriteRenderer;
+		private protected Rigidbody2D _rigidBody;
+		private protected BoxCollider2D _boxCollider;
+		private protected Animator _animator;
 
-        //Sound effects
-        protected Dictionary<string, AudioSource> sfx;
-        
-        //Methods
-        protected void Start()
-        {
-            //Initialize components
-            rigidBody = GetComponent<Rigidbody2D>();
-            boxCollider = GetComponent<BoxCollider2D>();
-            animator = GetComponent<Animator>();
-        }
+		private protected void Start()
+		{
+			_spriteRenderer = GetComponent<SpriteRenderer>();
+			_rigidBody = GetComponent<Rigidbody2D>();
+			_boxCollider = GetComponent<BoxCollider2D>();
+			_animator = GetComponent<Animator>();
+		}
 
-        //Abstract methods
-        protected abstract void MovementUpdate();
-        internal abstract void Kill();
-    }
+		private protected abstract void MovementUpdate();
+		internal abstract void Kill();
+	}
 }

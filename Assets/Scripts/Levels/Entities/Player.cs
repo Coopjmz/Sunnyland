@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
 using static UnityEngine.Input;
@@ -9,397 +8,310 @@ using static Levels.Game;
 
 namespace Levels
 {
-	class Player: Entity
+	class Player : Entity
 	{
-        //Player states
-        enum State
-        {
-            Idle,
-            Running,
-            Crouching,
-            Jumping,
-            Falling,
-            Climbing
-        }
+		[SerializeField] private float jumpForce = 40f;
+		[SerializeField] private float climbSpeed = 5f;
 
-        //Current player state
-        State state;
+		[Header("Power Up")]
+		[SerializeField] private float jumpBoost = 10f;
+		[SerializeField] private float scaleBoost = 1.5f;
+		[SerializeField] private float powerUpTime = 10f;
 
-        //Constants
-        const byte MAX_LIVES = 3;
+		[Header("Sounds")]
+		[SerializeField] private AudioSource footstepsSFX = default;
+		[SerializeField] private AudioSource jumpSFX = default;
+		[SerializeField] private AudioSource deathSFX = default;
 
-        //Static variables
-        static byte lives = MAX_LIVES;
+		[Header("Layers")]
+		[SerializeField] private LayerMask ground = default;
+		[SerializeField] private LayerMask ladderPlatform = default;
+		[SerializeField] private LayerMask enemy = default;
 
-        //Variables (initialized from Unity)
-        [SerializeField] float climbSpeed = 5f;
-        [SerializeField] float jumpForce = 40f;
-        [SerializeField] float jumpBoost = 10f;
-        [SerializeField] float scaleBoost = 1.5f;
-        [SerializeField] float powerUpTime = 10f;
-
-        //Variables
-        bool jumping, crouching, climbing, powerUp;
-        byte cherries;
-
-        //Axes
-        sbyte xAxis, yAxis;
-
-        //Components
-        SpriteRenderer spriteRenderer;
-        Transform ladder;
-
-        //Layers (initialized from Unity)
-        [SerializeField] LayerMask ground = default;
-        [SerializeField] LayerMask ladderPlatform = default;
-        [SerializeField] LayerMask enemy = default;
-
-        //Properties
-        bool TouchingGround => Abs(rigidBody.velocity.y) < EPSILON;
-
-        //Internal properties
-        internal bool IsAlive => boxCollider.isActiveAndEnabled;
-
-        //Methods
-        new void Start()
-        {
-            //Initialize components from base class
-            base.Start();
-            
-            //Initialize sound effects
-            sfx = new Dictionary<string, AudioSource>
-            {
-                {"Footsteps", GetComponents<AudioSource>()[0]},
-                {"Jump", GetComponents<AudioSource>()[1]},
-                {"Death", GetComponents<AudioSource>()[2]}
-            };
-
-            //Initialize components
-            spriteRenderer = GetComponent<SpriteRenderer>();
-
-            //Make player flicker
-            StartCoroutine(Flicker(1f));
-	    }
-
-	    void OnTriggerEnter2D(Collider2D collider)
-	    {
-            //If player touches a cherry
-            if(collider.CompareTag("Collectable"))
-                //Update UI text
-                UI.UpdateText("Cherry", ++cherries);
-            //If player touches a gem
-            else if(collider.CompareTag("Power Up"))
-            {
-                //Buff player
-                powerUp = true;
-                jumpForce += jumpBoost;
-                transform.localScale *= scaleBoost;
-                spriteRenderer.color = Color.yellow;
-
-                //Start timer
-                StartCoroutine(PowerUpTimer());
-            }
-            //If player is near a ladder
-            else if(collider.CompareTag("Ladder"))
-                ladder = collider.transform;
-        }
-
-        void OnTriggerExit2D(Collider2D collider)
-        {
-            //If player isn't near a ladder
-            if(collider.CompareTag("Ladder"))
-			{
-                if(climbing) SetClimbing(false);
-                ladder = null;
-            } 
-        }
-
-        void OnCollisionEnter2D(Collision2D collision)
-        {
-            //If player interacts with an enemy
-            if(collision.gameObject.CompareTag("Enemy"))
-            {
-                Collider2D jumpOnEnemy = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size,
-                    0f, Vector2.down, .5f, enemy).collider;
-
-                //If the player jumps on one, or has power up
-                if(jumpOnEnemy || powerUp)
-                {
-                    //Kill the enemy
-                    collision.gameObject.GetComponent<Enemy>().Kill();
-
-                    //If the player jumps on one
-                    if(jumpOnEnemy) Jump(false);
-                }
-                //If the player touches one, kill the player
-                else Kill();
-            }
-        }
-
-        void Update()
-        {
-            //While the player is alive
-            if(IsAlive)
-            {
-                //Update player
-                if(IsInputEnabled)
-                     MovementUpdate();
-                AnimationUpdate();
-
-                //Check if the player is out of bounds
-                if(transform.position.y < -10f) Kill();
-            }
-            else if(transform.position.y < -20f) ResetPlayer();
-
-            //Disable the tutorial
-            if(IsTutorialEnabled && Abs(transform.position.x) > 10f)
-                DisableTutorial();
-        }
-
-		void FixedUpdate()
+		private enum State
 		{
-			//Rigidbody physics update
-			if(IsAlive)
-		    {
-		    	if(xAxis != 0)
-		    		Move();
+			Idle,
+			Running,
+			Crouching,
+			Jumping,
+			Falling,
+			Climbing
+		}
 
-	                if(jumping)
-	                {
-	                    Jump();
-	                    jumping = false;
-	                }
-	                else if(climbing && yAxis != 0)
-	                    Climb();
-	        }
-	    }
+		private State _state;
 
-		protected override void MovementUpdate()
+		private const byte MAX_LIVES = 3;
+		private static byte _lives = MAX_LIVES;
+
+		private sbyte _xAxis, _yAxis;
+		private bool _jumping, _crouching, _climbing;
+
+		private byte _cherries;
+		private bool _powerUp;
+
+		private Transform _ladder;
+
+		private bool TouchingGround => Abs(_rigidBody.velocity.y) < EPSILON;
+		internal bool IsAlive => _boxCollider.isActiveAndEnabled;
+
+		private new void Start()
 		{
-	        //Get axes input
-	        xAxis = (sbyte)GetAxisRaw("Horizontal");
-	        yAxis = (sbyte)GetAxisRaw("Vertical");
+			base.Start();
+			StartCoroutine(Flicker(1f));
+		}
 
-	        if(!climbing)
+		private void OnTriggerEnter2D(Collider2D collider)
+		{
+			if(collider.CompareTag("Collectable"))
+				UI.UpdateText("Cherry", ++_cherries);
+			else if(collider.CompareTag("Power Up"))
 			{
-	            //If player attempts to climb
-	            if(ladder &&
-	             ((yAxis == 1 && !boxCollider.IsTouchingLayers(ladderPlatform)) ||
-	              (yAxis == -1 && (boxCollider.IsTouchingLayers(ladderPlatform) ||
-	                              !boxCollider.IsTouchingLayers(ground)))))
-	                SetClimbing(true);
-	            //If player jumps
-	            else if(GetButtonDown("Jump") && TouchingGround)
-	                jumping = true;
-	            //If player crouches
-	            else if(GetButton("Crouch") && TouchingGround)
-	                SetCrouching(true);
-	            //If player stands up
-	            else if(GetButtonUp("Crouch"))
-	                SetCrouching(false);
+				//Buff player
+				_powerUp = true;
+				jumpForce += jumpBoost;
+				transform.localScale *= scaleBoost;
+				_spriteRenderer.color = Color.yellow;
+
+				StartCoroutine(PowerUpTimer());
+			}
+			else if(collider.CompareTag("Ladder"))
+				_ladder = collider.transform;
+		}
+
+		private void OnTriggerExit2D(Collider2D collider)
+		{
+			if(collider.CompareTag("Ladder"))
+			{
+				if(_climbing) SetClimbing(false);
+				_ladder = null;
 			}
 		}
 
-        void Move()
-        {
-            //Set scale and X-axis velocity
-            transform.localScale =
-                new Vector3(xAxis * Abs(transform.localScale.x), transform.localScale.y);
-            rigidBody.velocity = new Vector2(xAxis * speed, rigidBody.velocity.y);
-
-            //If player was climbing
-            if(climbing)
-                //Stop climbing
-                SetClimbing(false);
-        }
-
-        void Jump(bool sound = true)
-        {
-            //Set Y-axis velocity
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
-
-            if(sound)
-                //Play jump sound
-                sfx["Jump"].Play();
-        }
-
-        void Climb()
-        {
-            //If player is at the bottom of the ladder
-            if(yAxis == -1 && boxCollider.IsTouchingLayers(ground))
-                //Get off the ladder
-                SetClimbing(false);
-            else
-                //Set Y-axis velocity
-                rigidBody.velocity = new Vector2(0f, yAxis * climbSpeed);
-        }
-
-        void SetCrouching(bool enabled)
-        {
-            if(enabled && !crouching)
+		private void OnCollisionEnter2D(Collision2D collision)
+		{
+			if(collision.gameObject.CompareTag("Enemy"))
 			{
-                //Decrease movement speed and jump force
-                speed /= 2f;
-                jumpForce /= 2f;
-            }
-            else if(!enabled && crouching)
-            {
-                //Increse movement speed and jump force
-                speed *= 2f;
-                jumpForce *= 2f;
-            }
+				Collider2D jumpOnEnemy = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size,
+					0f, Vector2.down, .5f, enemy).collider;
 
-            crouching = enabled;
-        }
+				if(jumpOnEnemy || _powerUp)
+				{
+					collision.gameObject.GetComponent<Enemy>().Kill();
 
-        void SetClimbing(bool enabled)
-        {
-            if(enabled && !climbing)
+					if(jumpOnEnemy) Jump(false);
+				}
+				else Kill();
+			}
+		}
+
+		private void Update()
+		{
+			if(IsAlive)
 			{
-                //Disable crouching
-                if(crouching) SetCrouching(false);
+				if(IsInputEnabled)
+					MovementUpdate();
+				AnimationUpdate();
 
-                //Set player position and constraints
-                transform.position = new Vector3(ladder.position.x, transform.position.y);
-                rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX |
-                                        RigidbodyConstraints2D.FreezeRotation;
+				if(transform.position.y < -10f) Kill();
+			}
+			else if(transform.position.y < -20f) ResetPlayer();
 
-                //Set linear drag and gravity scale
-                rigidBody.drag = 20f;
-                rigidBody.gravityScale = 0f;
-            }
-            else if(!enabled && climbing)
+			if(IsTutorialEnabled && Abs(transform.position.x) > 10f)
+				DisableTutorial();
+		}
+
+		private void FixedUpdate()
+		{
+			if(IsAlive)
 			{
-                //Set player velocity and constraints
-                rigidBody.velocity = Vector2.zero;
-                rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+				if(_xAxis != 0)
+					Move();
 
-                //Set linear drag and gravity scale
-                rigidBody.drag = DRAG;
-                rigidBody.gravityScale = GRAVITY;
-            }
+				if(_jumping)
+				{
+					Jump();
+					_jumping = false;
+				}
+				else if(_climbing && _yAxis != 0)
+					Climb();
+			}
+		}
 
-            //Toggle ladder platform
-            ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !enabled;
+		private protected override void MovementUpdate()
+		{
+			_xAxis = (sbyte)GetAxisRaw("Horizontal");
+			_yAxis = (sbyte)GetAxisRaw("Vertical");
 
-            climbing = enabled;
-        }
-
-		void AnimationUpdate()
-	    {
-            //Set animation speed
-            animator.speed = 1f;
-
-            //Player is climbing
-            if(climbing)
+			if(!_climbing)
 			{
-                state = State.Climbing;
+				if(_ladder &&
+				 ((_yAxis == 1 && !_boxCollider.IsTouchingLayers(ladderPlatform)) ||
+				  (_yAxis == -1 && (_boxCollider.IsTouchingLayers(ladderPlatform) ||
+								  !_boxCollider.IsTouchingLayers(ground)))))
+					SetClimbing(true);
+				else if(GetButtonDown("Jump") && TouchingGround)
+					_jumping = true;
+				else if(GetButton("Crouch") && TouchingGround)
+					SetCrouching(true);
+				else if(GetButtonUp("Crouch"))
+					SetCrouching(false);
+			}
+		}
 
-                //Change animation speed
-                if(Abs(rigidBody.velocity.y) < 2f)
-                     animator.speed = 0f;
-            }
-            //Player is falling
-            else if(rigidBody.velocity.y < -EPSILON)
-                state = State.Falling;
-            //Player is jumping
-            else if(rigidBody.velocity.y > EPSILON)
-                state = State.Jumping;
-            //Player is crouching
-            else if(crouching)
-                state = State.Crouching;
-            //Player is moving
-            else if(Abs(rigidBody.velocity.x) > EPSILON)
-                state = State.Running;
-            //Player is idle
-            else state = State.Idle;
+		private void Move()
+		{
+			transform.localScale =
+				new Vector3(_xAxis * Abs(transform.localScale.x), transform.localScale.y);
+			_rigidBody.velocity = new Vector2(_xAxis * speed, _rigidBody.velocity.y);
 
-            //Animate player
-            animator.SetInteger("State", (int)state);
-        }
+			if(_climbing) SetClimbing(false);
+		}
 
-        void ResetPlayer()
-        {
-            if(lives > 0)
-                //Respawn player
-                SceneLoader.Load(Scene.Active);
-            else GameOver();
-        }
+		private void Jump(bool sound = true)
+		{
+			_rigidBody.velocity = new Vector2(_rigidBody.velocity.x, jumpForce);
 
-        //Events
-        void Footsteps()
-        {
-            //Play footsteps sound
-            sfx["Footsteps"].Play();
-        }
+			if(sound) jumpSFX.Play();
+		}
 
-        //Coroutines
-        IEnumerator Flicker(float timer)
-	    {
-            //Start the timer
-            do
-            {
-                //Make the player flicker
-                spriteRenderer.enabled = !spriteRenderer.enabled;
+		private void Climb()
+		{
+			if(_yAxis == -1 && _boxCollider.IsTouchingLayers(ground))
+				SetClimbing(false);
+			else _rigidBody.velocity = new Vector2(0f, _yAxis * climbSpeed);
+		}
 
-                //Reduce the time left
-                timer -= .1f;
-                yield return new WaitForSeconds(.1f);
-            }
-            while(timer > 0f);
-        
-            //Make player visible
-            spriteRenderer.enabled = true;
-        }
+		private void SetCrouching(bool enabled)
+		{
+			if(enabled && !_crouching)
+			{
+				speed /= 2f;
+				jumpForce /= 2f;
+			}
+			else if(!enabled && _crouching)
+			{
+				speed *= 2f;
+				jumpForce *= 2f;
+			}
 
-        IEnumerator PowerUpTimer()
-	    {
-            //Create a timer
-            float timer = powerUpTime;
+			_crouching = enabled;
+		}
 
-            //Start the timer
-            do
-		    {
-                //If timer is about to run out, make player flicker
-                if(timer == 2f)
-                    StartCoroutine(Flicker(2f));
+		private void SetClimbing(bool enabled)
+		{
+			if(enabled && !_climbing)
+			{
+				if(_crouching) SetCrouching(false);
 
-                //Reduce the time left
-                timer--;
-                yield return new WaitForSeconds(1f);
-		    }
-            while(timer > 0f);
+				transform.position = new Vector3(_ladder.position.x, transform.position.y);
+				_rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX |
+										RigidbodyConstraints2D.FreezeRotation;
 
-            //Nerf player
-            powerUp = false;
-            jumpForce -= jumpBoost;
-            transform.localScale /= scaleBoost;
-            spriteRenderer.color = Color.white;
-	    }
+				_rigidBody.drag = 20f;
+				_rigidBody.gravityScale = 0f;
+			}
+			else if(!enabled && _climbing)
+			{
+				_rigidBody.velocity = Vector2.zero;
+				_rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        //Internal methods
-        internal override void Kill()
-	    {
-            //Decrement lives
-            UI.UpdateText("Life", --lives);
+				_rigidBody.drag = DRAG;
+				_rigidBody.gravityScale = GRAVITY;
+			}
 
-            //Death animation
-            rigidBody.velocity = new Vector2(0f, jumpForce);
-            boxCollider.enabled = false;
-            animator.SetTrigger("Death");
+			_ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !enabled;
 
-            //Death sound
-            sfx["Death"].Play();
+			_climbing = enabled;
+		}
 
-            //Disable the tutorial
-            if(IsTutorialEnabled)
-                DisableTutorial();
-        }
+		private void AnimationUpdate()
+		{
+			_animator.speed = 1f;
 
-        //Static methods
-        internal static void ResetLives()
-        {
-            lives = MAX_LIVES;
-        }
-    }
+			if(_climbing)
+			{
+				_state = State.Climbing;
+
+				if(Abs(_rigidBody.velocity.y) < 2f)
+					_animator.speed = 0f;
+			}
+			else if(_rigidBody.velocity.y < -EPSILON)
+				_state = State.Falling;
+			else if(_rigidBody.velocity.y > EPSILON)
+				_state = State.Jumping;
+			else if(_crouching)
+				_state = State.Crouching;
+			else if(Abs(_rigidBody.velocity.x) > EPSILON)
+				_state = State.Running;
+			else _state = State.Idle;
+
+			_animator.SetInteger("State", (int)_state);
+		}
+
+		private void ResetPlayer()
+		{
+			if(_lives > 0)
+				SceneLoader.Load(Scene.Active);
+			else GameOver();
+		}
+
+		private void Footsteps()
+		{
+			footstepsSFX.Play();
+		}
+
+		private IEnumerator Flicker(float timer)
+		{
+			do
+			{
+				_spriteRenderer.enabled = !_spriteRenderer.enabled;
+
+				timer -= .1f;
+				yield return new WaitForSeconds(.1f);
+			}
+			while(timer > 0f);
+
+			_spriteRenderer.enabled = true;
+		}
+
+		private IEnumerator PowerUpTimer()
+		{
+			float timer = powerUpTime;
+			do
+			{
+				if(timer == 2f)
+					StartCoroutine(Flicker(2f));
+
+				timer--;
+				yield return new WaitForSeconds(1f);
+			}
+			while(timer > 0f);
+
+			//Nerf player
+			_powerUp = false;
+			jumpForce -= jumpBoost;
+			transform.localScale /= scaleBoost;
+			_spriteRenderer.color = Color.white;
+		}
+
+		internal override void Kill()
+		{
+			UI.UpdateText("Life", --_lives);
+
+			//Death animation
+			_rigidBody.velocity = new Vector2(0f, jumpForce);
+			_boxCollider.enabled = false;
+			_animator.SetTrigger("Death");
+
+			deathSFX.Play();
+
+			if(IsTutorialEnabled)
+				DisableTutorial();
+		}
+
+		internal static void ResetLives()
+		{
+			_lives = MAX_LIVES;
+		}
+	}
 }

@@ -3,29 +3,24 @@ using Cinemachine;
 
 namespace Levels
 {
-    class Camera: MonoBehaviour
-    {
-        //Components
-        Player player;
-        CinemachineBrain cinemachine;
+	sealed class Camera : MonoBehaviour
+	{
+		private Player _player;
+		private CinemachineBrain _cinemachine;
 
-		//Methods
-		void Start()
+		private void Start()
 		{
-            //Initialize components
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-            cinemachine = GetComponent<CinemachineBrain>();
+			_player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+			_cinemachine = GetComponent<CinemachineBrain>();
 		}
 
-		void Update()
-        {
-            //When the player dies
-            if(!player.IsAlive)
+		private void Update()
+		{
+			if(!_player.IsAlive)
 			{
-                //Camera stops following the player
-                enabled = false;
-                cinemachine.enabled = false;
-            }
-        }
-    }
+				enabled = false;
+				_cinemachine.enabled = false;
+			}
+		}
+	}
 }

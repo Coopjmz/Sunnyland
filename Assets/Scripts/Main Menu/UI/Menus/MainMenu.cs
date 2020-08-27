@@ -1,8 +1,7 @@
 ﻿namespace MainMenu
 {
-	class MainMenu: Menu
+	sealed class MainMenu : Menu
 	{
-		//Events
 		public void Play()
 		{
 			SceneLoader.Load(Scene.FirstLevel);

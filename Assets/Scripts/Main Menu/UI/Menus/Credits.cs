@@ -1,8 +1,7 @@
 ﻿namespace MainMenu
 {
-	class Credits: Menu
+	sealed class Credits : Menu
 	{
-		//Events
 		public new void ToMainMenu()
 		{
 			UI.Display("Credits", false);

@@ -2,50 +2,48 @@
 
 namespace Levels
 {
-    class Opossum: Enemy
-    {
-        //Variables (initialized from Unity)
-        [SerializeField] float leftBound = default;
-        [SerializeField] float rightBound = default;
+	sealed class Opossum : Enemy
+	{
+		[Header("Bounds")]
+		[SerializeField] private Transform leftBound = default;
+		[SerializeField] private Transform rightBound = default;
 
-        //Variables
-        sbyte scale;
+		[Header("Sounds")]
+		[SerializeField] private AudioSource deathSFX = default;
 
-        new void Start()
+		private sbyte _direction;
+		private float _leftBound, _rightBound;
+
+		private new void Start()
 		{
-            //Initialize variables and components from base class
-            base.Start();
+			base.Start();
 
-            //Initialize variables
-            scale = (sbyte)transform.localScale.x;
-        }
+			_deathSFX = deathSFX;
+			_direction = (sbyte)transform.localScale.x;
+			_leftBound = leftBound.position.x;
+			_rightBound = rightBound.position.x;
+		}
 
-		//Methods
-        void FixedUpdate()
-        {
-            //Update opossum
-            MovementUpdate();
-        }
+		private void FixedUpdate()
+		{
+			MovementUpdate();
+		}
 
-        protected override void MovementUpdate()
-        {
-            //If opossum is going left and is at or past the left border
-            if(scale == 1 && transform.position.x <= leftBound)
-            {
-                //Turn right
-                scale = -1;
-                transform.localScale = new Vector3(scale, 1f);
-            }
-            //If opossum is going right is at or past the right border
-            else if(scale == -1 && transform.position.x >= rightBound)
-            {
-                //Turn left
-                scale = 1;
-                transform.localScale = new Vector3(scale, 1f);
-            }
-            
-            //Set scale and X-axis velocity
-            rigidBody.velocity = new Vector2(-scale * speed, 0f);
-        }
-    }
+		private protected override void MovementUpdate()
+		{
+			//Patrol AI
+			if(_direction == 1 && transform.position.x <= _leftBound)
+			{
+				_direction = -1;
+				transform.localScale = new Vector3(_direction, 1f);
+			}
+			else if(_direction == -1 && transform.position.x >= _rightBound)
+			{
+				_direction = 1;
+				transform.localScale = new Vector3(_direction, 1f);
+			}
+
+			_rigidBody.velocity = new Vector2(-_direction * speed, 0f);
+		}
+	}
 }

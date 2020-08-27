@@ -2,31 +2,31 @@
 
 namespace Level
 {
-	class Collectable: MonoBehaviour
+	[RequireComponent(typeof(SpriteRenderer))]
+	[RequireComponent(typeof(BoxCollider2D))]
+	[RequireComponent(typeof(Animator))]
+	sealed class Collectable : MonoBehaviour
 	{
-		//Components
-		SpriteRenderer spriteRenderer;
-		BoxCollider2D boxCollider;
-		AudioSource sound;
+		[SerializeField] private AudioSource pickupSFX = default;
+
+		private SpriteRenderer _spriteRenderer;
+		private BoxCollider2D _boxCollider;
 
 		void Start()
 		{
-			spriteRenderer = GetComponent<SpriteRenderer>();
-			boxCollider = GetComponent<BoxCollider2D>();
-			sound = GetComponent<AudioSource>();
+			_spriteRenderer = GetComponent<SpriteRenderer>();
+			_boxCollider = GetComponent<BoxCollider2D>();
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
 			if(collider.CompareTag("Player"))
 			{
-				//Get the collectable
-				spriteRenderer.enabled = false;
-				boxCollider.enabled = false;
-				Destroy(gameObject, sound.clip.length);
+				_spriteRenderer.enabled = false;
+				_boxCollider.enabled = false;
+				Destroy(gameObject, pickupSFX.clip.length);
 
-				//Play a pick up sound
-				sound.Play();
+				pickupSFX.Play();
 			}
 		}
 	}

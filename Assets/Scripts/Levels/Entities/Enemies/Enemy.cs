@@ -1,41 +1,25 @@
-﻿using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Levels
 {
-    abstract class Enemy: Entity
-    {
-        //Methods
-        protected new void Start()
-        {
-            //Initialize components from base class
-            base.Start();
+	abstract class Enemy : Entity
+	{
+		private protected AudioSource _deathSFX;
 
-            //Initialize sound effects
-            sfx = new Dictionary<string, AudioSource>
-            {
-                {"Death", GetComponent<AudioSource>()}
-            };
-        }
+		private void Death()
+		{
+			Destroy(gameObject);
+		}
 
-        //Events
-        void Death()
-        {
-            Destroy(gameObject);
-        }
+		internal override void Kill()
+		{
+			//Death animation
+			enabled = false;
+			_rigidBody.bodyType = RigidbodyType2D.Static;
+			_boxCollider.enabled = false;
+			_animator.SetTrigger("Death");
 
-        //Internal methods
-        internal override void Kill()
-        {
-            //Death animation
-            enabled = false;
-            rigidBody.bodyType = RigidbodyType2D.Static;
-            boxCollider.enabled = false;
-            animator.SetTrigger("Death");
-
-            //Death sound
-            sfx["Death"].Play();
-        }
-    }
+			_deathSFX.Play();
+		}
+	}
 }

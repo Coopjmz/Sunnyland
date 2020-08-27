@@ -5,97 +5,85 @@ using TMPro;
 
 namespace Levels
 {
-    class UI: MonoBehaviour
-    {
-        //Singleton
-        static UI ui;
-        
-        //Text fields
-        [SerializeField] TextMeshProUGUI lifeCount = default;
-        [SerializeField] TextMeshProUGUI cherryCount = default;
-        [SerializeField] TextMeshProUGUI signText = default;
-        static Dictionary<string, TextMeshProUGUI> textFields;
-        
-        //Objects
-        [SerializeField] GameObject stats = default;
-        [SerializeField] GameObject sign = default;
-        [SerializeField] GameObject interact = default;
+	sealed class UI : MonoBehaviour
+	{
+		[SerializeField] private TextMeshProUGUI lifeCount = default;
+		[SerializeField] private TextMeshProUGUI cherryCount = default;
+		[SerializeField] private TextMeshProUGUI signText = default;
 
-        //Tutorial
-        [SerializeField] GameObject tutorial = default;
+		[SerializeField] private GameObject hud = default;
+		[SerializeField] private GameObject sign = default;
+		[SerializeField] private GameObject interact = default;
+		[SerializeField] private GameObject tutorial = default;
 
-        //Menus
-        [SerializeField] GameObject pauseMenu = default;
-        [SerializeField] GameObject gameOver = default;
-        static Dictionary<string, GameObject> objects;
+		[SerializeField] private GameObject pauseMenu = default;
+		[SerializeField] private GameObject gameOver = default;
 
-        //Methods
-        void Start()
-        {
-            //Singleton
-            if(!ui)
-            {
-                ui = this;
-                DontDestroyOnLoad(gameObject);
+		private static UI _ui;
 
-                //Initialize text fields
-                textFields = new Dictionary<string, TextMeshProUGUI>
-                {
-                    {"Life", lifeCount},
-                    {"Cherry", cherryCount},
-                    {"Sign", signText}
-                };
+		private static Dictionary<string, TextMeshProUGUI> _textFields;
+		private static Dictionary<string, GameObject> _objects;
 
-                //Initialize objects
-                objects = new Dictionary<string, GameObject>
-                {
-                    {"Stats", stats},
-                    {"Sign", sign},
-                    {"Interact", interact},
-                    {"Tutorial", tutorial},
-                    {"Pause Menu", pauseMenu},
-                    {"Game Over", gameOver}
-                };
-            }
-            else
-            {
-                //Reset cherry count
-                UpdateText("Cherry", 0);
-                Destroy(gameObject);
-            }
-        }
+		private void Start()
+		{
+			if(!_ui)
+			{
+				_ui = this;
+				DontDestroyOnLoad(gameObject);
 
-        void Update()
-        {
-            //If the player presses ESCAPE, go to Pause Menu
-            if(Input.GetButtonDown("Pause Menu") && !Game.IsGameOver)
-                PauseMenu.TogglePauseMenu();
-        }
+				_textFields = new Dictionary<string, TextMeshProUGUI>
+				{
+					{"Life", lifeCount},
+					{"Cherry", cherryCount},
+					{"Sign", signText}
+				};
 
-        //Static methods
-        internal static void UpdateText(string key, object value)
-        {
-            textFields[key].text = value.ToString();
-        }
+				_objects = new Dictionary<string, GameObject>
+				{
+					{"HUD", hud},
+					{"Sign", sign},
+					{"Interact", interact},
+					{"Tutorial", tutorial},
+					{"Pause Menu", pauseMenu},
+					{"Game Over", gameOver}
+				};
+			}
+			else
+			{
+				UpdateText("Cherry", 0);
+				Destroy(gameObject);
+			}
+		}
 
-        internal static bool IsActive(string key)
-        {
-            return objects[key] && objects[key].activeSelf;
-        }
+		private void Update()
+		{
+			if(Input.GetButtonDown("Pause Menu") && !Game.IsGameOver)
+				PauseMenu.TogglePauseMenu();
+		}
 
-        internal static void Display(string key, bool enable = true)
-        {
-            objects[key].SetActive(enable);
-        }
+		internal static void UpdateText(string key, object value)
+		{
+			_textFields[key].text = value.ToString();
+		}
 
-        internal static void DisableTutorialText()
-        {
-            Destroy(ui.tutorial);
-        }
+		internal static bool IsActive(string key)
+		{
+			return _objects[key] && _objects[key].activeSelf;
+		}
 
-        internal static void ResetUI()
-        {
-            Destroy(ui.gameObject);
-        }
-    }
+		internal static void Display(string key, bool enable = true)
+		{
+			_objects[key].SetActive(enable);
+		}
+
+		internal static void DisableTutorialText()
+		{
+			Destroy(_ui.tutorial);
+		}
+
+		internal static void ResetUI()
+		{
+			Destroy(_ui.gameObject);
+		}
+	}
 }

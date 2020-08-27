@@ -4,18 +4,15 @@ using UnityEngine;
 
 namespace MainMenu
 {
-    class UI: MonoBehaviour
-    {
-		//Menus
-		[SerializeField] GameObject mainMenu = default;
-		[SerializeField] GameObject credits = default;
-		static Dictionary<string, GameObject> objects;
+	sealed class UI : MonoBehaviour
+	{
+		[SerializeField] private GameObject mainMenu = default;
+		[SerializeField] private GameObject credits = default;
+		private static Dictionary<string, GameObject> _objects;
 
-		//Methods
-		void Start()
+		private void Start()
 		{
-			//Initialize objects
-			objects = new Dictionary<string, GameObject>
+			_objects = new Dictionary<string, GameObject>
 			{
 				{"Main Menu", mainMenu},
 				{"Credits", credits}
@@ -24,7 +21,7 @@ namespace MainMenu
 
 		internal static void Display(string key, bool enable = true)
 		{
-			objects[key].SetActive(enable);
+			_objects[key].SetActive(enable);
 		}
 	}
 }

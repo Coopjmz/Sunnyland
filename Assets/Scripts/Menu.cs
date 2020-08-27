@@ -1,13 +1,9 @@
 ﻿using UnityEngine;
 
-using Levels;
-
-class Menu: MonoBehaviour
+abstract class Menu : MonoBehaviour
 {
-	//Events
 	public void ToMainMenu()
 	{
-		Game.Restart();
 		SceneLoader.Load(Scene.MainMenu);
 	}
 

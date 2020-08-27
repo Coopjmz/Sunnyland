@@ -5,28 +5,22 @@ using UnityEngine;
 
 namespace Levels
 {
-	class PauseMenu: Menu
+	sealed class PauseMenu : Menu
 	{
-		//Static variables
-		static bool paused;
+		private static bool _paused;
+		private static Dictionary<string, bool> _textFieldStates;
 
-		//Text fields
-		static Dictionary<string, bool> textFieldStates;
-
-		//Methods
-		void Awake()
+		private void Awake()
 		{
-			//Initialize text field states
-			textFieldStates = new Dictionary<string, bool>
+			_textFieldStates = new Dictionary<string, bool>
 			{
-				{"Stats", true},
+				{"HUD", true},
 				{"Sign", false},
 				{"Interact", false},
 				{"Tutorial", false}
 			};
 		}
 
-		//Events
 		public void Resume()
 		{
 			TogglePauseMenu();
@@ -35,39 +29,34 @@ namespace Levels
 		public new void ToMainMenu()
 		{
 			TogglePauseMenu();
+			Game.Restart();
 			base.ToMainMenu();
 		}
 
-		//Static methods
 		internal static void TogglePauseMenu()
 		{
-			paused = !paused;
+			_paused = !_paused;
 
-			//Toggle Puse Menu screen
-			UI.Display("Pause Menu", paused);
+			UI.Display("Pause Menu", _paused);
+			Time.timeScale = _paused ? 0f : 1f;
+			Game.IsInputEnabled = !_paused;
 
-			//Toggle game time
-			Time.timeScale = paused ? 0f : 1f;
-
-			//Toggle input
-			Game.IsInputEnabled = !paused;
-
-			//Toggle text fields
-			if(paused)
+			//Toggles all text fields on screen
+			if(_paused)
 			{
-				foreach(var key in textFieldStates.Keys.ToList())
+				foreach (var key in _textFieldStates.Keys.ToList())
 					if(UI.IsActive(key))
 					{
-						textFieldStates[key] = true;
+						_textFieldStates[key] = true;
 						UI.Display(key, false);
 					}
 			}
 			else
 			{
-				foreach(var key in textFieldStates.Keys.ToList())
-					if(textFieldStates[key])
+				foreach (var key in _textFieldStates.Keys.ToList())
+					if(_textFieldStates[key])
 					{
-						textFieldStates[key] = false;
+						_textFieldStates[key] = false;
 						UI.Display(key);
 					}
 			}

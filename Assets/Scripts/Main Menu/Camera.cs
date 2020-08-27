@@ -2,29 +2,24 @@
 
 namespace MainMenu
 {
-    class Camera: MonoBehaviour
-    {
-        //Variables (initialized from Unity)
-        [SerializeField] float end = 187f;
+	sealed class Camera : MonoBehaviour
+	{
+		[SerializeField] private float end = 187f;
+		[SerializeField] private AudioSource music = default;
 
-        //Variables
-        float start, unitsPerSecond;
+		private float _start, _unitsPerSecond;
 
-        //Methods
-        void Start()
+		private void Start()
 		{
-            //Initialize variables
-            start = transform.position.x;
-            unitsPerSecond = (end - start) / GetComponent<AudioSource>().clip.length;
-        }
+			_start = transform.position.x;
+			_unitsPerSecond = (end - _start) / music.clip.length;
+		}
 
-        void Update()
-        {
-            if(transform.position.x < end)
-                //Move camera right
-                transform.Translate(Vector3.right * Time.deltaTime * unitsPerSecond);
-            //Reset camera
-            else transform.position = new Vector3(start, transform.position.y, -10f);
-        }
-    }
+		private void Update()
+		{
+			if(transform.position.x < end)
+				transform.Translate(Vector3.right * Time.deltaTime * _unitsPerSecond);
+			else transform.position = new Vector3(_start, transform.position.y, -10f);
+		}
+	}
 }

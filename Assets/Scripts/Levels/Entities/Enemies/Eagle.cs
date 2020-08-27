@@ -2,51 +2,44 @@
 
 namespace Levels
 {
-    class Eagle: Enemy
-    {
-        //Variables (initialized from Unity)
-        [SerializeField] float range = 7f;
+	sealed class Eagle : Enemy
+	{
+		[SerializeField] private float range = 7f;
 
-        //Variables
-        bool chasing;
+		[Header("Sounds")]
+		[SerializeField] private AudioSource deathSFX = default;
 
-        //Components
-        Player player;
+		private bool _chasing;
 
-		//Methods
-		new void Start()
+		private Player _player;
+
+		private new void Start()
 		{
-            //Initialize components from base class
-            base.Start();
+			base.Start();
 
-            //Initialize components
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+			_deathSFX = deathSFX;
+			_player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 		}
 
-		void FixedUpdate()
-        {
-            //While the player is alive
-            if(player.IsAlive)
-                //Update eagle
-                MovementUpdate();
-        }
+		private void FixedUpdate()
+		{
+			if(_player.IsAlive)
+				MovementUpdate();
+		}
 
-        protected override void MovementUpdate()
-	    {
-            //Vector between the eagle and the player
-            Vector2 vector = new Vector2(player.transform.position.x - transform.position.x,
-                                         player.transform.position.y - transform.position.y);
+		private protected override void MovementUpdate()
+		{
+			Vector2 vector = new Vector2(_player.transform.position.x - transform.position.x,
+										 _player.transform.position.y - transform.position.y);
 
-            //If the distance is less than the range of the eagle
-            if(!chasing && vector.magnitude <= range)
-                chasing = true;
+			if(!_chasing && vector.magnitude <= range)
+				_chasing = true;
 
-            if(chasing)
-		    {
-                //Eagle chases the player
-                rigidBody.velocity = speed * vector.normalized;
-                transform.localScale = new Vector3(-vector.x / Mathf.Abs(vector.x), 1f);
-            }
-        }
-    }
+			if(_chasing)
+			{
+				_rigidBody.velocity = speed * vector.normalized;
+				transform.localScale = new Vector3(-vector.x / Mathf.Abs(vector.x), 1f);
+			}
+		}
+	}
 }

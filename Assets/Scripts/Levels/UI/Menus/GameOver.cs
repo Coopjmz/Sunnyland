@@ -1,20 +1,22 @@
 ﻿namespace Levels
 {
-    class GameOver: Menu
-    {
-		//Methods
-		void Awake()
+	sealed class GameOver : Menu
+	{
+		private void Awake()
 		{
-            //Hide stats when player dies
-			UI.Display("Stats", false);
+			UI.Display("HUD", false);
 		}
 
-		//Events
 		public void PlayAgain()
-        {
-            //Restarts the game
-            Game.Restart();
-            SceneLoader.Load(Scene.FirstLevel);
-        }
-    }
+		{
+			Game.Restart();
+			SceneLoader.Load(Scene.FirstLevel);
+		}
+
+		public new void ToMainMenu()
+		{
+			Game.Restart();
+			base.ToMainMenu();
+		}
+	}
 }
