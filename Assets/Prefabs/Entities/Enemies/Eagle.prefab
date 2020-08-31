@@ -323,6 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821d7fef289a73643a8e4e694d083b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  range: 7
-  deathSFX: {fileID: 8750704556168900440}
+  _speed: 5
+  _range: 7
+  _deathSFX: {fileID: 8750704556168900440}

@@ -1,41 +1,26 @@
 ﻿using UnityEngine;
 using static UnityEngine.SceneManagement.SceneManager;
 
-enum Scene
+namespace Sunnyland
 {
-	Active,
-	Next,
-	MainMenu,
-	FirstLevel
-}
-
-sealed class SceneLoader : MonoBehaviour
-{
-	[SerializeField] private string nextScene = default;
-
-	private static string _nextScene;
-
-	private void Start()
+	sealed class Scene
 	{
-		_nextScene = nextScene;
+		internal static Scene MainMenu => new Scene("Main Menu");
+		internal static Scene FirstLevel => new Scene("Level 1");
+		internal static Scene Active => new Scene(GetActiveScene().name);
+		internal static Scene Next { get; set; }
+
+		internal string Name { get; }
+
+		internal Scene(string sceneName) => Name = sceneName;
 	}
 
-	internal static void Load(Scene scene)
+	sealed class SceneLoader : MonoBehaviour
 	{
-		switch(scene)
-		{
-			case Scene.Active:
-				LoadScene(GetActiveScene().name);
-				break;
-			case Scene.Next:
-				LoadScene(_nextScene);
-				break;
-			case Scene.MainMenu:
-				LoadScene("Main Menu");
-				break;
-			case Scene.FirstLevel:
-				LoadScene("Level 1");
-				break;
-		}
+		[SerializeField] private string _nextScene = default;
+
+		private void Start() => Scene.Next = new Scene(_nextScene);
+
+		internal static void Load(Scene scene) => LoadScene(scene.Name);
 	}
 }

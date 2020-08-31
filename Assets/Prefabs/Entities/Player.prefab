@@ -424,10 +424,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2290898810643216768}
   - component: {fileID: 1212705269}
-  - component: {fileID: 1660381939821934818}
+  - component: {fileID: 1212705268}
   - component: {fileID: 6513286775722366464}
   - component: {fileID: 2894260434258292575}
   - component: {fileID: 2290898810643216772}
+  - component: {fileID: 2148568747154791896}
+  - component: {fileID: 1743918281456644581}
+  - component: {fileID: 7436109767261883212}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -488,7 +491,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 487192073
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 72de0c64f2c6a498096698322c976a67, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -501,7 +504,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &1660381939821934818
+--- !u!50 &1212705268
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -579,26 +582,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887654b67e193a3448d23b1a1a18a1fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 2894260434258292575}
-  transform: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  rigidBody: {fileID: 0}
-  boxCollider: {fileID: 0}
-  speed: 10
-  jumpForce: 40
-  climbSpeed: 5
-  jumpBoost: 10
-  scaleBoost: 1.5
-  powerUpTime: 10
-  footstepsSFX: {fileID: 711825197}
-  jumpSFX: {fileID: 987897456}
-  deathSFX: {fileID: 7345652}
-  ground:
+  _speed: 10
+  _jumpForce: 40
+  _climbSpeed: 5
+  _jumpBoost: 10
+  _scaleBoost: 1.5
+  _powerUpTime: 10
+  _footstepsSFX: {fileID: 711825197}
+  _jumpSFX: {fileID: 987897456}
+  _deathSFX: {fileID: 7345652}
+  _ground:
     serializedVersion: 2
     m_Bits: 256
-  ladderPlatform:
+  _ladderPlatform:
     serializedVersion: 2
     m_Bits: 512
-  enemy:
+  _enemy:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!114 &2148568747154791896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290898810643216769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0507515a63871419af27636737c8d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1743918281456644581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290898810643216769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483350626a5055f43a233bc0aa166b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7436109767261883212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290898810643216769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83910148c3e628e4ca92c631583ec6c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

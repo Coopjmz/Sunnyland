@@ -1,4 +1,4 @@
-﻿namespace MainMenu
+﻿namespace Sunnyland.MainMenu.UI.Menus
 {
 	sealed class Credits : Menu
 	{

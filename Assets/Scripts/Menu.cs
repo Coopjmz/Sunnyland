@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
 
-abstract class Menu : MonoBehaviour
+namespace Sunnyland
 {
-	public void ToMainMenu()
+	abstract class Menu : MonoBehaviour
 	{
-		SceneLoader.Load(Scene.MainMenu);
-	}
-
-	public void Quit()
-	{
-		Application.Quit();
+		public void ToMainMenu() => SceneLoader.Load(Scene.MainMenu);
+		public void Quit() => Application.Quit();
 	}
 }

@@ -167,12 +167,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f70a6ef6bc9d95448b9c7c05ad3b7492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  _speed: 20
   jumpForce: 30
-  leftBound: {fileID: 4177765980525856641}
-  rightBound: {fileID: 2950840759747923430}
-  jumpSFX: {fileID: 6030374462360237023}
-  deathSFX: {fileID: 5302104169534185025}
+  _leftBound: {fileID: 4177765980525856641}
+  _rightBound: {fileID: 2950840759747923430}
+  _jumpSFX: {fileID: 6030374462360237023}
+  _deathSFX: {fileID: 5302104169534185025}
 --- !u!1 &540347299415989742
 GameObject:
   m_ObjectHideFlags: 0

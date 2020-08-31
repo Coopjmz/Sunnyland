@@ -355,10 +355,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7125c64feffabd544935a1213e431476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  leftBound: {fileID: 7080266018679850963}
-  rightBound: {fileID: 618513548244900083}
-  deathSFX: {fileID: 87620773881117317}
+  _speed: 5
+  _leftBound: {fileID: 7080266018679850963}
+  _rightBound: {fileID: 618513548244900083}
+  _deathSFX: {fileID: 87620773881117317}
 --- !u!1 &9206660205618790332
 GameObject:
   m_ObjectHideFlags: 0

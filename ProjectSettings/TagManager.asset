@@ -8,6 +8,7 @@ TagManager:
   - Power Up
   - Ladder
   - Collectable
+  - Interactable
   layers:
   - Default
   - TransparentFX
@@ -50,6 +51,9 @@ TagManager:
     locked: 0
   - name: Middleground
     uniqueID: 3265543479
+    locked: 0
+  - name: Vegetaion
+    uniqueID: 3961508039
     locked: 0
   - name: Foreground
     uniqueID: 215968985
