@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 618513548244900083}
   m_Layer: 11
-  m_Name: Right Bound
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -400,7 +400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7080266018679850963}
   m_Layer: 11
-  m_Name: Left Bound
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

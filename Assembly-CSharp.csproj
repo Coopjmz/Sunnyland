@@ -86,7 +86,7 @@
     <Compile Include="Assets\Scripts\Game\UI\UI.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Player\PlayerPowerUp.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Enemies\Patrol\Opossum.cs" />
-    <Compile Include="Assets\Scripts\Game\MapBorders.cs" />
+    <Compile Include="Assets\Scripts\Game\Bounds.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Entity.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Enemies\Eagle.cs" />
   </ItemGroup>

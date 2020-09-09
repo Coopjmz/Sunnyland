@@ -37,15 +37,6 @@ namespace Sunnyland.Game.Entities.Player
 			PowerUp = GetComponent<PlayerPowerUp>();
 		}
 
-		private void Update()
-		{
-			if (Game.IsTutorialEnabled && Mathf.Abs(transform.position.x) > 10f)
-			{
-				Game.DisableTutorial();
-				enabled = false;
-			}
-		}
-
 		internal override void Die()
 		{
 			Stats.Lives--;
@@ -63,9 +54,6 @@ namespace Sunnyland.Game.Entities.Player
 			Animator.SetTrigger("Death");
 
 			Sounds.PlayDeathSound();
-
-			if (Game.IsTutorialEnabled)
-				Game.DisableTutorial();
 		}
 	}
 }

@@ -58,6 +58,7 @@ namespace Sunnyland.Game.Entities.Player
 					_player.Rigidbody.drag = 20f;
 					_player.Rigidbody.gravityScale = 0f;
 
+					Xaxis = 0;
 					_player.Input.DisableJumpAndCrouch();
 				}
 				else
@@ -98,7 +99,11 @@ namespace Sunnyland.Game.Entities.Player
 			if (Xaxis * transform.localScale.x < 0f)
 				transform.localScale = new Vector3(Xaxis * Mathf.Abs(transform.localScale.x), transform.localScale.y);
 
-			if (Climbing) Climbing = false;
+			if (Climbing)
+			{
+				print("Movement climbing: false");
+				Climbing = false;
+			}
 		}
 
 		internal void Jump(bool sound = true)
