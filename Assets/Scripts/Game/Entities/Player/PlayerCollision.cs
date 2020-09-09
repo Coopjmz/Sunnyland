@@ -1,34 +1,39 @@
 ﻿using UnityEngine;
 
+using Sunnyland.Game.Interactables;
+using Sunnyland.Game.Entities.Enemies;
+
 namespace Sunnyland.Game.Entities.Player
 {
+	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerCollision : MonoBehaviour
 	{
-		/*
+		private PlayerController _player;
+
+		private void Awake() => _player = GetComponent<PlayerController>();
+
 		private void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (collider.CompareTag("Collectable"))
-				Cherries++;
-			else if (collider.CompareTag("Power Up"))
-			{
-				//Buff player
-				_powerUp = true;
-				_jumpForce += _jumpBoost;
-				transform.localScale *= _scaleBoost;
-				_spriteRenderer.color = Color.yellow;
-
-				StartCoroutine(PowerUpTimer());
-			}
+			if (collider.CompareTag("Interactable"))
+				_player.Interact.Interactable = collider.GetComponent<Interactable>();
 			else if (collider.CompareTag("Ladder"))
-				_ladder = collider.transform;
+				_player.Interact.Ladder = collider.transform;
+			else if (collider.CompareTag("Collectable"))
+				_player.Stats.Cherries++;
+			else if (collider.CompareTag("Power Up"))
+				_player.PowerUp.Activate();
 		}
 
 		private void OnTriggerExit2D(Collider2D collider)
 		{
+			if (collider.CompareTag("Interactable"))
+				_player.Interact.Interactable = null;
 			if (collider.CompareTag("Ladder"))
 			{
-				if (_climbing) SetClimbing(false);
-				_ladder = null;
+				if (_player.Movement.Climbing)
+					_player.Movement.Climbing = false;
+
+				_player.Interact.Ladder = null;
 			}
 		}
 
@@ -36,38 +41,17 @@ namespace Sunnyland.Game.Entities.Player
 		{
 			if (collision.gameObject.CompareTag("Enemy"))
 			{
-				Collider2D jumpOnEnemy = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size,
-					0f, Vector2.down, .5f, _enemy).collider;
+				Collider2D jumpOnEnemy = Physics2D.BoxCast(_player.BoxCollider.bounds.center,
+					_player.BoxCollider.bounds.size, 0f, Vector2.down, .1f, Layers.Enemy).collider;
 
-				if (jumpOnEnemy || _powerUp)
+				if (jumpOnEnemy || _player.PowerUp.IsActive)
 				{
 					collision.gameObject.GetComponent<Enemy>().Die();
 
-					if (jumpOnEnemy) Jump(false);
+					if (jumpOnEnemy) _player.Movement.Jump(sound: false);
 				}
-				else Die();
+				else _player.Die();
 			}
 		}
-
-		private IEnumerator PowerUpTimer()
-		{
-			float timer = _powerUpTime;
-			do
-			{
-				if (timer == 2f)
-					StartCoroutine(Flicker(2f));
-
-				timer--;
-				yield return new WaitForSeconds(1f);
-			}
-			while (timer > 0f);
-
-			//Nerf player
-			_powerUp = false;
-			_jumpForce -= _jumpBoost;
-			transform.localScale /= _scaleBoost;
-			_spriteRenderer.color = Color.white;
-		}
-		*/
 	}
 }

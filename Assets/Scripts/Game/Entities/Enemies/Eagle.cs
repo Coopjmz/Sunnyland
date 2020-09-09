@@ -15,13 +15,13 @@ namespace Sunnyland.Game.Entities.Enemies
 
 		private PlayerController _player;
 
-		private new void Start()
+		private new void Awake()
 		{
-			base.Start();
-
-			DeathSFX = _deathSFX;
-			_player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+			base.Awake();
+			_player = FindObjectOfType<PlayerController>();
 		}
+
+		private void Start() => DeathSFX = _deathSFX;
 
 		private void FixedUpdate()
 		{
@@ -39,7 +39,7 @@ namespace Sunnyland.Game.Entities.Enemies
 
 			if (_chasing)
 			{
-				_rigidbody.velocity = _speed * vector.normalized;
+				Rigidbody.velocity = _speed * vector.normalized;
 				transform.localScale = new Vector3(-vector.x / Mathf.Abs(vector.x), 1f);
 			}
 		}

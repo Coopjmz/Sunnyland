@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6c80093c1ee375d498152251c1021475
+guid: 2ee16330c6381a448b4bb8ecda0fa467
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -11,4 +11,4 @@ ScriptedImporter:
   generateWrapperCode: 1
   wrapperCodePath: 
   wrapperClassName: 
-  wrapperCodeNamespace: Sunnyland.Game.Controls
+  wrapperCodeNamespace: Sunnyland.Game.Input

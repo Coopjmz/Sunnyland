@@ -1,44 +1,102 @@
 ﻿using UnityEngine;
 
-using Sunnyland.Game.Controls;
+using Sunnyland.Game.Input;
 
 namespace Sunnyland.Game.Entities.Player
 {
+	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerInput : MonoBehaviour
 	{
-		/*
-		private static PlayerControls _playerControls;
+		private const sbyte UP = 1;
+		private const sbyte DOWN = -1;
 
-		private void Awake() => _playerControls ??= new PlayerControls();
-		private void OnEnable() => _playerControls.Enable();
-		private void OnDisable() => _playerControls.Disable();
+		private bool _holdCrouchButton;
 
-		private void Update()
+		private PlayerController _player;
+		private Controls _controls;
+
+		private bool IsTouchingGround => Mathf.Abs(_player.Rigidbody.velocity.y) < Game.EPSILON;
+
+		private void Awake()
 		{
-			if (IsAlive && IsInputEnabled)
-				MovementUpdate();
+			_player = GetComponent<PlayerController>();
+			InitControls();
 		}
 
-		private protected override void MovementUpdate()
-		{
-			_xAxis = (sbyte)_playerControls.Player.Move.ReadValue<float>();
-			_yAxis = (sbyte)_playerControls.Player.Climb.ReadValue<float>();
+		private void OnEnable() => _controls.Enable();
+		private void OnDisable() => _controls.Disable();
 
-			if (!_climbing)
+		private void Update() => CrouchCheck();
+
+		internal void EnableJumpAndCrouch()
+		{
+			_controls.Player.Jump.Enable();
+			_controls.Player.Crouch.Enable();
+		}
+
+		internal void DisableJumpAndCrouch()
+		{
+			_controls.Player.Jump.Disable();
+			_controls.Player.Crouch.Disable();
+		}
+
+		private void InitControls()
+		{
+			_controls = new Controls();
+
+			//X-axis
+			_controls.Player.Move.started += context => _player.Movement.Xaxis = (sbyte)context.ReadValue<float>();
+			_controls.Player.Move.canceled += _ => _player.Movement.Xaxis = 0;
+
+			//Y-axis
+			_controls.Player.Climb.started += context => _player.Movement.Yaxis = (sbyte)context.ReadValue<float>();
+			_controls.Player.Climb.canceled += _ => _player.Movement.Yaxis = 0;
+
+			//Get on a ladder
+			_controls.Player.Climb.performed += context =>
 			{
-				if (_ladder &&
-					((_yAxis == 1 && !_boxCollider.IsTouchingLayers(_ladderPlatform)) ||
-					 (_yAxis == -1 && (_boxCollider.IsTouchingLayers(_ladderPlatform) ||
-									  !_boxCollider.IsTouchingLayers(_ground)))))
-					SetClimbing(true);
-				else if (_playerControls.Player.Jump.triggered && TouchingGround)
-					_jumping = true;
-				else if (_playerControls.Player.Crouch.triggered && TouchingGround)
-					SetCrouching(true);
-				else if (_playerControls.Player.Crouch.triggered)
-					SetCrouching(false);
-			}
+				if (IsAbleToClimb((sbyte)context.ReadValue<float>()))
+					_player.Movement.Climbing = true;
+			};
+
+			//Jump
+			_controls.Player.Jump.performed += _ =>
+			{
+				if (!IsAbleToClimb(UP) && IsTouchingGround)
+					_player.Movement.Jumping = true;
+			};
+
+			//Crouch
+			_controls.Player.Crouch.started += _ =>
+			{
+				_holdCrouchButton = true;
+				if (!IsAbleToClimb(DOWN) && IsTouchingGround)
+					_player.Movement.Crouching = true;
+			};
+
+			//Stand up
+			_controls.Player.Crouch.canceled += _ =>
+			{
+				_holdCrouchButton = false;
+				if (_player.Movement.Crouching)
+					_player.Movement.Crouching = false;
+			};
+
+			//Interact
+			_controls.Player.Interact.performed += _ => _player.Interact.Interact();
 		}
-		*/
+
+		private void CrouchCheck()
+		{
+			if (_holdCrouchButton && !_player.Movement.Crouching && IsTouchingGround)
+				_player.Movement.Crouching = true;
+		}
+
+		private bool IsAbleToClimb(sbyte yAxis)
+		{
+			return !_player.Movement.Climbing && _player.Interact.Ladder &&
+				((yAxis == UP && !_player.BoxCollider.IsTouchingLayers(Layers.TopLadder)) ||
+				 (yAxis == DOWN && !_player.BoxCollider.IsTouchingLayers(Layers.BottomLadder)));
+		}
 	}
 }

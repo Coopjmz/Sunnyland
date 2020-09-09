@@ -583,7 +583,7 @@ PrefabInstance:
     - target: {fileID: 3311401573718920216, guid: 09c4efb632ee2b14f97b721cd38eff0f,
         type: 3}
       propertyPath: m_Name
-      value: Level
+      value: Map
       objectReference: {fileID: 0}
     - target: {fileID: 3311401573718920218, guid: 09c4efb632ee2b14f97b721cd38eff0f,
         type: 3}
@@ -681,8 +681,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This game has been created for learning purposes onely.\nSunnyland TM
-    is not to be involved in any comercial and\\or merchandice.\n\n\xA9 2020 Kristiyan
+  m_text: "This game has been created for learning purposes only.\nSunnyland TM is
+    not to be involved in any comercial and\\or merchandice.\n\n\xA9 2020 Kristiyan
     Nachev All Rights Reserved"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: da19124d7530e80458ee3cc88dd64059, type: 2}

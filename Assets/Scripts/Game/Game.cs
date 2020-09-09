@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
-using static Sunnyland.Game.Entities.Player.PlayerController;
+using static Sunnyland.Game.Entities.Player.PlayerStats;
 using static Sunnyland.Game.UI.UI;
 
 namespace Sunnyland.Game
 {
 	static class Game
 	{
+		internal const float EPSILON = .01f;
 		internal const float DRAG = 5f;
 		internal const float GRAVITY = 10f;
 		

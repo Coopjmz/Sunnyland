@@ -10,9 +10,9 @@ namespace Sunnyland.Game
 		private PlayerController _player;
 		private CinemachineBrain _cinemachine;
 
-		private void Start()
+		private void Awake()
 		{
-			_player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+			_player = FindObjectOfType<PlayerController>();
 			_cinemachine = GetComponent<CinemachineBrain>();
 		}
 

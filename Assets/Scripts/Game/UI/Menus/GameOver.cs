@@ -2,7 +2,7 @@
 {
 	sealed class GameOver : Menu
 	{
-		private void Awake() => UI.Display("HUD", false);
+		private void Start() => UI.Display("HUD", false);
 
 		public void PlayAgain()
 		{

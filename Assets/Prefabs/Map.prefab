@@ -35056,9 +35056,9 @@ GameObject:
   - component: {fileID: 3311401572783367410}
   - component: {fileID: 3311401572783367411}
   - component: {fileID: 3311401572783367408}
-  - component: {fileID: 3311401572783367409}
   - component: {fileID: 3311401572783367422}
   - component: {fileID: 1559405094}
+  - component: {fileID: 3311401572783367409}
   m_Layer: 8
   m_Name: Foreground
   m_TagString: Untagged
@@ -42093,27 +42093,6 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
---- !u!50 &3311401572783367409
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3311401572783367420}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!66 &3311401572783367422
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -42694,6 +42673,27 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!50 &3311401572783367409
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3311401572783367420}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &3311401573718920216
 GameObject:
   m_ObjectHideFlags: 0
@@ -42704,8 +42704,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3311401573718920218}
   - component: {fileID: 3311401573718920219}
+  - component: {fileID: 3311401572993379643}
+  - component: {fileID: 3311401572993379644}
   m_Layer: 0
-  m_Name: Level
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42741,6 +42743,44 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!114 &3311401572993379643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3311401573718920216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99b8f37f0ad517f42985442282a7c35d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _killBorder: -10
+  _resetBorder: -20
+--- !u!114 &3311401572993379644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3311401573718920216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5885b29ef37fe944aaab6e299382881, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ground:
+    serializedVersion: 2
+    m_Bits: 256
+  _topLadder:
+    serializedVersion: 2
+    m_Bits: 512
+  _bottomLadder:
+    serializedVersion: 2
+    m_Bits: 1024
+  _enemy:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &7670275297869892397
 GameObject:
   m_ObjectHideFlags: 0

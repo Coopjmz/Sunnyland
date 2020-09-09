@@ -12,7 +12,7 @@ namespace Sunnyland.Game
 		private SpriteRenderer _spriteRenderer;
 		private BoxCollider2D _boxCollider;
 
-		private void Start()
+		private void Awake()
 		{
 			_spriteRenderer = GetComponent<SpriteRenderer>();
 			_boxCollider = GetComponent<BoxCollider2D>();

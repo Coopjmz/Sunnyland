@@ -2,91 +2,118 @@
 
 namespace Sunnyland.Game.Entities.Player
 {
+	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerMovement : MonoBehaviour
 	{
-		/*
-		private void FixedUpdate()
-		{
-			if (IsAlive)
-			{
-				if (_xAxis != 0)
-					Move();
+		[SerializeField] private float _speed = 10f;
+		[SerializeField] private float _jumpForce = 40f;
+		[SerializeField] private float _climbSpeed = 5f;
 
-				if (_jumping)
+		private bool _crouching, _climbing;
+
+		private PlayerController _player;
+
+		internal float JumpForce
+		{
+			get => _jumpForce;
+			set => _jumpForce = value;
+		}
+
+		internal sbyte Xaxis { private get; set; }
+		internal sbyte Yaxis { private get; set; }
+
+		internal bool Jumping { get; set; }
+
+		internal bool Crouching
+		{
+			get => _crouching;
+			set
+			{
+				if (value)
 				{
-					Jump();
-					_jumping = false;
+					_speed /= 2f;
+					_jumpForce /= 2f;
 				}
-				else if (_climbing && _yAxis != 0)
-					Climb();
+				else
+				{
+					_speed *= 2f;
+					_jumpForce *= 2f;
+				}
+
+				_crouching = value;
 			}
+		}
+
+		internal bool Climbing
+		{
+			get => _climbing;
+			set
+			{
+				if (value)
+				{
+					transform.position = new Vector3(_player.Interact.Ladder.position.x, transform.position.y);
+					_player.Rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX |
+													RigidbodyConstraints2D.FreezeRotation;
+
+					_player.Rigidbody.drag = 20f;
+					_player.Rigidbody.gravityScale = 0f;
+
+					_player.Input.DisableJumpAndCrouch();
+				}
+				else
+				{
+					_player.Rigidbody.velocity = Vector2.zero;
+					_player.Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+					_player.Rigidbody.drag = Game.DRAG;
+					_player.Rigidbody.gravityScale = Game.GRAVITY;
+
+					_player.Input.EnableJumpAndCrouch();
+				}
+
+				_player.Interact.Ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !value;
+
+				_climbing = value;
+			}
+		}
+
+		private void Awake() => _player = GetComponent<PlayerController>();
+		private void FixedUpdate() => MovementUpdate();
+
+		private void MovementUpdate()
+		{
+			if (Xaxis != 0)
+				Move();
+
+			if (Jumping)
+				Jump();
+			else if (Climbing && Yaxis != 0)
+				Climb();
 		}
 
 		private void Move()
 		{
-			if (_xAxis * transform.localScale.x < 0f)
-				transform.localScale = new Vector3(_xAxis * Abs(transform.localScale.x), transform.localScale.y);
-			_rigidbody.velocity = new Vector2(_xAxis * _speed, _rigidbody.velocity.y);
+			_player.Rigidbody.velocity = new Vector2(Xaxis * _speed, _player.Rigidbody.velocity.y);
 
-			if (_climbing) SetClimbing(false);
+			if (Xaxis * transform.localScale.x < 0f)
+				transform.localScale = new Vector3(Xaxis * Mathf.Abs(transform.localScale.x), transform.localScale.y);
+
+			if (Climbing) Climbing = false;
 		}
 
-		private void Jump(bool sound = true)
+		internal void Jump(bool sound = true)
 		{
-			_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+			Jumping = false;
+			_player.Rigidbody.velocity = new Vector2(_player.Rigidbody.velocity.x, _jumpForce);
 
-			if (sound) _jumpSFX.Play();
+			if (sound) _player.Sounds.PlayJumpSound();
 		}
 
 		private void Climb()
 		{
-			if (_yAxis == -1 && _boxCollider.IsTouchingLayers(_ground))
-				SetClimbing(false);
-			else _rigidbody.velocity = new Vector2(0f, _yAxis * _climbSpeed);
+			if (Yaxis == -1 && _player.BoxCollider.IsTouchingLayers(Layers.BottomLadder))
+				Climbing = false;
+			else _player.Rigidbody.velocity = new Vector2(0f, Yaxis * _climbSpeed);
 		}
-
-		private void SetCrouching(bool enabled)
-		{
-			if (enabled && !_crouching)
-			{
-				_speed /= 2f;
-				_jumpForce /= 2f;
-			}
-			else if (!enabled && _crouching)
-			{
-				_speed *= 2f;
-				_jumpForce *= 2f;
-			}
-
-			_crouching = enabled;
-		}
-
-		private void SetClimbing(bool enabled)
-		{
-			if (enabled && !_climbing)
-			{
-				if (_crouching) SetCrouching(false);
-
-				transform.position = new Vector3(_ladder.position.x, transform.position.y);
-				_rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX |
-										RigidbodyConstraints2D.FreezeRotation;
-
-				_rigidbody.drag = 20f;
-				_rigidbody.gravityScale = 0f;
-			}
-			else if (!enabled && _climbing)
-			{
-				_rigidbody.velocity = Vector2.zero;
-				_rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-				_rigidbody.drag = DRAG;
-				_rigidbody.gravityScale = GRAVITY;
-			}
-
-			_ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !enabled;
-
-			_climbing = enabled;
-		}
-		*/
 	}
 }

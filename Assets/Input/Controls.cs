@@ -1,27 +1,29 @@
+// GENERATED AUTOMATICALLY FROM 'Assets/Input/Controls.inputactions'
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Sunnyland.Game.Controls
+namespace Sunnyland.Game.Input
 {
-    public class @PlayerControls : IInputActionCollection, IDisposable
+    public class @Controls : IInputActionCollection, IDisposable
     {
         public InputActionAsset asset { get; }
-        public @PlayerControls()
+        public @Controls()
         {
             asset = InputActionAsset.FromJson(@"{
-    ""name"": ""PlayerControls"",
+    ""name"": ""Controls"",
     ""maps"": [
         {
-            ""name"": ""Movement"",
-            ""id"": ""ef3639cc-a5c0-4f84-929a-5097f9e633d3"",
+            ""name"": ""Player"",
+            ""id"": ""628131c6-6f2b-45f8-94f4-b37945370051"",
             ""actions"": [
                 {
                     ""name"": ""Move"",
                     ""type"": ""Button"",
-                    ""id"": ""201cb41e-fad5-4f76-97d6-8a1d03d46202"",
+                    ""id"": ""f79727bc-23d7-4853-9eb9-642266ac87f4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -29,7 +31,7 @@ namespace Sunnyland.Game.Controls
                 {
                     ""name"": ""Climb"",
                     ""type"": ""Button"",
-                    ""id"": ""d607b5e2-91e4-49bd-8149-10e5767f413e"",
+                    ""id"": ""15e207ab-b15d-42ac-b369-c3c5dd234155"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -37,7 +39,7 @@ namespace Sunnyland.Game.Controls
                 {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
-                    ""id"": ""11bd9998-8169-453d-81b0-fd71acb52a62"",
+                    ""id"": ""571d05f2-3662-43c8-8e37-24d0f84fa2d3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -45,16 +47,24 @@ namespace Sunnyland.Game.Controls
                 {
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
-                    ""id"": ""737c3481-8159-432c-b3fe-61d0d17e0072"",
+                    ""id"": ""6a999239-d934-47b2-9776-a7ebdd75bb67"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(behavior=2)""
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""f05aa9f6-321c-41bc-b024-f0f206bc8b96"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": ""X axis"",
-                    ""id"": ""3ae652f8-7301-4ea5-95dc-b0fee861f399"",
+                    ""name"": ""X Axis"",
+                    ""id"": ""19b500fd-7984-40b7-aea5-48637c76c42b"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -65,7 +75,7 @@ namespace Sunnyland.Game.Controls
                 },
                 {
                     ""name"": ""positive"",
-                    ""id"": ""b326ade0-25ec-41bd-a9f2-ad7fc2633fd1"",
+                    ""id"": ""1f9348b4-f9de-4eff-a34e-f1079a2a36a7"",
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -76,7 +86,7 @@ namespace Sunnyland.Game.Controls
                 },
                 {
                     ""name"": ""negative"",
-                    ""id"": ""2a078cd1-2aa4-402b-b71f-637b3160ba28"",
+                    ""id"": ""b8be922c-cc6b-41c9-bdba-9a42856a6e28"",
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -87,7 +97,18 @@ namespace Sunnyland.Game.Controls
                 },
                 {
                     ""name"": """",
-                    ""id"": ""61978aa8-c5d3-4699-9e31-5b6c22dcb824"",
+                    ""id"": ""0295aaaa-1831-4a72-9f42-4f929b0dd1a0"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e7fc707-da35-4d83-9411-de37f4098210"",
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -98,7 +119,7 @@ namespace Sunnyland.Game.Controls
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8040052d-c8b1-48df-8fa3-07be5b928f59"",
+                    ""id"": ""c0e797a3-0fd2-453a-a1ca-bdd3bfb3b139"",
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -108,8 +129,8 @@ namespace Sunnyland.Game.Controls
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Y axis"",
-                    ""id"": ""b5bd1d30-1bf1-4f0d-a708-5d849d032581"",
+                    ""name"": ""Y Axis"",
+                    ""id"": ""dc3b5315-a2c7-46e7-a03b-71f02228c9e8"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -120,7 +141,7 @@ namespace Sunnyland.Game.Controls
                 },
                 {
                     ""name"": ""positive"",
-                    ""id"": ""edab14fd-0632-4fc3-9e79-ce372b1ccfa0"",
+                    ""id"": ""d120f88a-cdb2-4eeb-89ca-f98515b95963"",
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -131,7 +152,7 @@ namespace Sunnyland.Game.Controls
                 },
                 {
                     ""name"": ""negative"",
-                    ""id"": ""708e627c-0495-4dde-a297-92f0296a2103"",
+                    ""id"": ""b6b85dca-9eb3-4f76-be13-3bccd2ec225c"",
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -141,46 +162,17 @@ namespace Sunnyland.Game.Controls
                     ""isPartOfComposite"": true
                 }
             ]
-        },
-        {
-            ""name"": ""Utility"",
-            ""id"": ""4b3cad03-71e5-40f2-9a3c-70ebee6fcd9d"",
-            ""actions"": [
-                {
-                    ""name"": ""Interact"",
-                    ""type"": ""Button"",
-                    ""id"": ""125ff074-6394-4f59-ac7d-12b410e58050"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""c3812227-c5c2-4260-8438-d15a4dc5d76d"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": []
 }");
-            // Movement
-            m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-            m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
-            m_Movement_Climb = m_Movement.FindAction("Climb", throwIfNotFound: true);
-            m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
-            m_Movement_Crouch = m_Movement.FindAction("Crouch", throwIfNotFound: true);
-            // Utility
-            m_Utility = asset.FindActionMap("Utility", throwIfNotFound: true);
-            m_Utility_Interact = m_Utility.FindAction("Interact", throwIfNotFound: true);
+            // Player
+            m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+            m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+            m_Player_Climb = m_Player.FindAction("Climb", throwIfNotFound: true);
+            m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+            m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+            m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -227,44 +219,49 @@ namespace Sunnyland.Game.Controls
             asset.Disable();
         }
 
-        // Movement
-        private readonly InputActionMap m_Movement;
-        private IMovementActions m_MovementActionsCallbackInterface;
-        private readonly InputAction m_Movement_Move;
-        private readonly InputAction m_Movement_Climb;
-        private readonly InputAction m_Movement_Jump;
-        private readonly InputAction m_Movement_Crouch;
-        public struct MovementActions
+        // Player
+        private readonly InputActionMap m_Player;
+        private IPlayerActions m_PlayerActionsCallbackInterface;
+        private readonly InputAction m_Player_Move;
+        private readonly InputAction m_Player_Climb;
+        private readonly InputAction m_Player_Jump;
+        private readonly InputAction m_Player_Crouch;
+        private readonly InputAction m_Player_Interact;
+        public struct PlayerActions
         {
-            private @PlayerControls m_Wrapper;
-            public MovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_Movement_Move;
-            public InputAction @Climb => m_Wrapper.m_Movement_Climb;
-            public InputAction @Jump => m_Wrapper.m_Movement_Jump;
-            public InputAction @Crouch => m_Wrapper.m_Movement_Crouch;
-            public InputActionMap Get() { return m_Wrapper.m_Movement; }
+            private @Controls m_Wrapper;
+            public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_Player_Move;
+            public InputAction @Climb => m_Wrapper.m_Player_Climb;
+            public InputAction @Jump => m_Wrapper.m_Player_Jump;
+            public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+            public InputAction @Interact => m_Wrapper.m_Player_Interact;
+            public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(MovementActions set) { return set.Get(); }
-            public void SetCallbacks(IMovementActions instance)
+            public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+            public void SetCallbacks(IPlayerActions instance)
             {
-                if (m_Wrapper.m_MovementActionsCallbackInterface != null)
+                if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
                 {
-                    @Move.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
-                    @Move.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
-                    @Move.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
-                    @Climb.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnClimb;
-                    @Climb.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnClimb;
-                    @Climb.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnClimb;
-                    @Jump.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnJump;
-                    @Jump.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnJump;
-                    @Jump.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnJump;
-                    @Crouch.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnCrouch;
-                    @Crouch.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnCrouch;
-                    @Crouch.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnCrouch;
+                    @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                    @Climb.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClimb;
+                    @Climb.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClimb;
+                    @Climb.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClimb;
+                    @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                    @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                    @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                    @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                    @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                    @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                    @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                    @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                    @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 }
-                m_Wrapper.m_MovementActionsCallbackInterface = instance;
+                m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Move.started += instance.OnMove;
@@ -279,52 +276,19 @@ namespace Sunnyland.Game.Controls
                     @Crouch.started += instance.OnCrouch;
                     @Crouch.performed += instance.OnCrouch;
                     @Crouch.canceled += instance.OnCrouch;
-                }
-            }
-        }
-        public MovementActions @Movement => new MovementActions(this);
-
-        // Utility
-        private readonly InputActionMap m_Utility;
-        private IUtilityActions m_UtilityActionsCallbackInterface;
-        private readonly InputAction m_Utility_Interact;
-        public struct UtilityActions
-        {
-            private @PlayerControls m_Wrapper;
-            public UtilityActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Interact => m_Wrapper.m_Utility_Interact;
-            public InputActionMap Get() { return m_Wrapper.m_Utility; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(UtilityActions set) { return set.Get(); }
-            public void SetCallbacks(IUtilityActions instance)
-            {
-                if (m_Wrapper.m_UtilityActionsCallbackInterface != null)
-                {
-                    @Interact.started -= m_Wrapper.m_UtilityActionsCallbackInterface.OnInteract;
-                    @Interact.performed -= m_Wrapper.m_UtilityActionsCallbackInterface.OnInteract;
-                    @Interact.canceled -= m_Wrapper.m_UtilityActionsCallbackInterface.OnInteract;
-                }
-                m_Wrapper.m_UtilityActionsCallbackInterface = instance;
-                if (instance != null)
-                {
                     @Interact.started += instance.OnInteract;
                     @Interact.performed += instance.OnInteract;
                     @Interact.canceled += instance.OnInteract;
                 }
             }
         }
-        public UtilityActions @Utility => new UtilityActions(this);
-        public interface IMovementActions
+        public PlayerActions @Player => new PlayerActions(this);
+        public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
             void OnClimb(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnCrouch(InputAction.CallbackContext context);
-        }
-        public interface IUtilityActions
-        {
             void OnInteract(InputAction.CallbackContext context);
         }
     }

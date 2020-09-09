@@ -11,14 +11,10 @@ namespace Sunnyland.Game.UI.Menus
 	{
 		private static bool _paused;
 
-		private static PlayerController _player;
 		private static Dictionary<string, bool> _textFieldStates;
 
 		private void Awake()
 		{
-			_player = _player ??
-				GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-
 			_textFieldStates = new Dictionary<string, bool>
 			{
 				{"HUD", true},
@@ -34,7 +30,7 @@ namespace Sunnyland.Game.UI.Menus
 
 			UI.Display("Pause Menu", _paused);
 			Time.timeScale = _paused ? 0f : 1f;
-			_player.enabled = !_paused;
+			FindObjectOfType<PlayerInput>().enabled = !_paused;
 
 			ToggleTextFields();
 		}
