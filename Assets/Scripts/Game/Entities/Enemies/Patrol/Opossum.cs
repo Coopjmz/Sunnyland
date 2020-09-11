@@ -21,7 +21,7 @@ namespace Sunnyland.Game.Entities.Enemies.Patrol
 
 		private void FixedUpdate() => MovementUpdate();
 
-		private protected override void MovementUpdate()
+		protected override void MovementUpdate()
 		{
 			PatrolAI();
 			Rigidbody.velocity = new Vector2(-Direction * _speed, 0f);

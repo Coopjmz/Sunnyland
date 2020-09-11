@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using Sunnyland.Game.ScriptableObjects;
+
 namespace Sunnyland.Game.Entities.Player
 {
 	[RequireComponent(typeof(PlayerStats))]
@@ -12,16 +14,20 @@ namespace Sunnyland.Game.Entities.Player
 	[RequireComponent(typeof(PlayerPowerUp))]
 	sealed class PlayerController : Entity
 	{
-		internal bool IsAlive => BoxCollider.isActiveAndEnabled;
+		[SerializeField] private PlayerData _data = default;
 
-		internal PlayerStats Stats { get; private set; }
-		internal PlayerInput Input { get; private set; }
-		internal PlayerMovement Movement { get; private set; }
-		internal PlayerCollision Collision { get; private set; }
-		internal PlayerAnimation Animation { get; private set; }
-		internal PlayerSounds Sounds { get; private set; }
-		internal PlayerInteract Interact { get; private set; }
-		internal PlayerPowerUp PowerUp { get; private set; }
+		public bool IsAlive => BoxCollider.isActiveAndEnabled;
+
+		public PlayerData Data => _data;
+
+		public PlayerStats Stats { get; private set; }
+		public PlayerInput Input { get; private set; }
+		public PlayerMovement Movement { get; private set; }
+		public PlayerCollision Collision { get; private set; }
+		public PlayerAnimation Animation { get; private set; }
+		public PlayerSounds Sounds { get; private set; }
+		public PlayerInteract Interact { get; private set; }
+		public PlayerPowerUp PowerUp { get; private set; }
 
 		private new void Awake()
 		{
@@ -37,7 +43,7 @@ namespace Sunnyland.Game.Entities.Player
 			PowerUp = GetComponent<PlayerPowerUp>();
 		}
 
-		internal override void Die()
+		public override void Die()
 		{
 			Stats.Lives--;
 
@@ -46,10 +52,10 @@ namespace Sunnyland.Game.Entities.Player
 			Movement.enabled = false;
 
 			if (Movement.Crouching)
-				Movement.Crouching = false;
+				Movement.SetCrouching(false);
 
 			//Death animation
-			Rigidbody.velocity = new Vector2(0f, Movement.JumpForce);
+			Rigidbody.velocity = new Vector2(0f, Data.DefaultJumpForce);
 			BoxCollider.enabled = false;
 			Animator.SetTrigger("Death");
 

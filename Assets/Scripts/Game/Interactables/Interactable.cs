@@ -20,12 +20,12 @@ namespace Sunnyland.Game.Interactables
 			}
 		}
 
-		private protected void OnTriggerExit2D(Collider2D collider)
+		protected void OnTriggerExit2D(Collider2D collider)
 		{
 			if (collider.CompareTag("Player"))
 				Display("Interact", false);
 		}
 
-		internal virtual void Interact() => Display("Interact", false);
+		public virtual void Interact() => Display("Interact", false);
 	}
 }

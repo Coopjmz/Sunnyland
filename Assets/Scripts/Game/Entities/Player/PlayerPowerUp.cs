@@ -6,22 +6,18 @@ namespace Sunnyland.Game.Entities.Player
 	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerPowerUp : MonoBehaviour
 	{
-		[SerializeField] private float _jumpBoost = 10f;
-		[SerializeField] private float _scaleBoost = 1.5f;
-		[SerializeField] private float _duration = 10f;
-
 		private PlayerController _player;
 
-		internal bool IsActive { get; private set; }
+		public bool IsActive { get; private set; }
 
 		private void Awake() => _player = GetComponent<PlayerController>();
 
-		internal void Activate()
+		public void Activate()
 		{
 			IsActive = true;
 
-			_player.Movement.JumpForce += _jumpBoost;
-			transform.localScale *= _scaleBoost;
+			_player.Movement.JumpForce = _player.Data.PowerUpJumpForce;
+			transform.localScale *= _player.Data.PowerUpScale;
 			_player.SpriteRenderer.color = Color.yellow;
 
 			StartCoroutine(Timer());
@@ -31,14 +27,14 @@ namespace Sunnyland.Game.Entities.Player
 		{
 			IsActive = false;
 
-			_player.Movement.JumpForce -= _jumpBoost;
-			transform.localScale /= _scaleBoost;
+			_player.Movement.JumpForce = _player.Data.DefaultJumpForce;
+			transform.localScale /= _player.Data.PowerUpScale;
 			_player.SpriteRenderer.color = Color.white;
 		}
 
 		private IEnumerator Timer()
 		{
-			float timer = _duration;
+			float timer = _player.Data.Duration;
 			do
 			{
 				if (timer == 2f)

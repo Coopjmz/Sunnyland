@@ -7,27 +7,27 @@ namespace Sunnyland.Game
 {
 	static class Game
 	{
-		internal const float EPSILON = .01f;
-		internal const float DRAG = 5f;
-		internal const float GRAVITY = 10f;
+		public const float EPSILON = .01f;
+		public const float DRAG = 5f;
+		public const float GRAVITY = 10f;
 		
-		internal static bool IsTutorialEnabled { get; private set; } = true;
-		internal static bool IsGameOver { get; private set; } = false;
+		public static bool IsTutorialEnabled { get; private set; } = true;
+		public static bool IsGameOver { get; private set; } = false;
 
-		internal static void DisableTutorial()
+		public static void DisableTutorial()
 		{
 			IsTutorialEnabled = false;
 			DisableTutorialText();
 		}
 
-		internal static void GameOver()
+		public static void GameOver()
 		{
 			IsGameOver = true;
 			GameObject.FindGameObjectWithTag("Player").SetActive(false);
 			Display("Game Over");
 		}
 
-		internal static void Restart()
+		public static void Restart()
 		{
 			IsTutorialEnabled = true;
 			IsGameOver = false;

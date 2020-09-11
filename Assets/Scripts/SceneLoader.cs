@@ -5,14 +5,14 @@ namespace Sunnyland
 {
 	sealed class Scene
 	{
-		internal static Scene MainMenu => new Scene("Main Menu");
-		internal static Scene FirstLevel => new Scene("Level 1");
-		internal static Scene Active => new Scene(GetActiveScene().name);
-		internal static Scene Next { get; set; }
+		public static Scene MainMenu => new Scene("Main Menu");
+		public static Scene FirstLevel => new Scene("Level 1");
+		public static Scene Active => new Scene(GetActiveScene().name);
+		public static Scene Next { get; set; }
 
-		internal string Name { get; }
+		public string Name { get; }
 
-		internal Scene(string sceneName) => Name = sceneName;
+		public Scene(string sceneName) => Name = sceneName;
 	}
 
 	sealed class SceneLoader : MonoBehaviour
@@ -21,6 +21,6 @@ namespace Sunnyland
 
 		private void Start() => Scene.Next = new Scene(_nextScene);
 
-		internal static void Load(Scene scene) => LoadScene(scene.Name);
+		public static void Load(Scene scene) => LoadScene(scene.Name);
 	}
 }

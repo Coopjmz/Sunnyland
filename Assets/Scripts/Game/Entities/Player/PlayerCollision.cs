@@ -31,7 +31,7 @@ namespace Sunnyland.Game.Entities.Player
 			if (collider.CompareTag("Ladder"))
 			{
 				if (_player.Movement.Climbing)
-					_player.Movement.Climbing = false;
+					_player.Movement.SetClimbing(false);
 
 				_player.Interact.Ladder = null;
 			}

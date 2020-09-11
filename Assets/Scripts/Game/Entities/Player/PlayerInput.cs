@@ -28,13 +28,13 @@ namespace Sunnyland.Game.Entities.Player
 
 		private void Update() => CrouchCheck();
 
-		internal void EnableJumpAndCrouch()
+		public void EnableJumpAndCrouch()
 		{
 			_controls.Player.Jump.Enable();
 			_controls.Player.Crouch.Enable();
 		}
 
-		internal void DisableJumpAndCrouch()
+		public void DisableJumpAndCrouch()
 		{
 			_controls.Player.Jump.Disable();
 			_controls.Player.Crouch.Disable();
@@ -56,7 +56,7 @@ namespace Sunnyland.Game.Entities.Player
 			_controls.Player.Climb.performed += context =>
 			{
 				if (IsAbleToClimb((sbyte)context.ReadValue<float>()))
-					_player.Movement.Climbing = true;
+					_player.Movement.SetClimbing(true);
 			};
 
 			//Jump
@@ -71,7 +71,7 @@ namespace Sunnyland.Game.Entities.Player
 			{
 				_holdCrouchButton = true;
 				if (!IsAbleToClimb(DOWN) && IsTouchingGround)
-					_player.Movement.Crouching = true;
+					_player.Movement.SetCrouching(true);
 			};
 
 			//Stand up
@@ -79,7 +79,7 @@ namespace Sunnyland.Game.Entities.Player
 			{
 				_holdCrouchButton = false;
 				if (_player.Movement.Crouching)
-					_player.Movement.Crouching = false;
+					_player.Movement.SetCrouching(false);
 			};
 
 			//Interact
@@ -89,7 +89,7 @@ namespace Sunnyland.Game.Entities.Player
 		private void CrouchCheck()
 		{
 			if (_holdCrouchButton && !_player.Movement.Crouching && IsTouchingGround)
-				_player.Movement.Crouching = true;
+				_player.Movement.SetCrouching(true);
 		}
 
 		private bool IsAbleToClimb(sbyte yAxis)

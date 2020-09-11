@@ -49,7 +49,7 @@ namespace Sunnyland.Game.Entities.Player
 			_player.Animator.SetInteger("State", (int)_state);
 		}
 
-		internal IEnumerator Flicker(float timer)
+		public IEnumerator Flicker(float timer)
 		{
 			do
 			{

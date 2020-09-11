@@ -29,7 +29,7 @@ namespace Sunnyland.Game.Entities.Enemies
 				MovementUpdate();
 		}
 
-		private protected override void MovementUpdate()
+		protected override void MovementUpdate()
 		{
 			Vector2 vector = new Vector2(_player.transform.position.x - transform.position.x,
 										 _player.transform.position.y - transform.position.y);

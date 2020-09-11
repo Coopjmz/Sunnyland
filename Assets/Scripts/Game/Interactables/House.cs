@@ -2,7 +2,7 @@
 {
 	sealed class House : Interactable
 	{
-		internal override void Interact()
+		public override void Interact()
 		{
 			base.Interact();
 			Game.Restart();

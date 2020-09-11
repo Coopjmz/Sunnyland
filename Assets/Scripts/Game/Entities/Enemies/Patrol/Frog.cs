@@ -33,7 +33,7 @@ namespace Sunnyland.Game.Entities.Enemies.Patrol
 
 		private void Update() => AnimationUpdate();
 
-		private protected override void MovementUpdate()
+		protected override void MovementUpdate()
 		{
 			PatrolAI();
 			Rigidbody.velocity = new Vector2(-Direction * _speed, jumpForce);

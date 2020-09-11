@@ -7,14 +7,16 @@ namespace Sunnyland.Game.Entities.Player
 	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerStats : MonoBehaviour
 	{
-		internal static event Action<string, object> OnStatChange;
+		public static event Action<string, object> OnStatChange;
 
-		internal const byte MAX_LIVES = 3;
+		private static byte _maxLives;
 
 		private byte _lives;
 		private byte _cherries;
 
-		internal byte Lives
+		private PlayerController _player;
+
+		public byte Lives
 		{
 			get => _lives;
 			set
@@ -25,7 +27,7 @@ namespace Sunnyland.Game.Entities.Player
 			}
 		}
 
-		internal byte Cherries
+		public byte Cherries
 		{
 			get => _cherries;
 			set
@@ -35,9 +37,15 @@ namespace Sunnyland.Game.Entities.Player
 			}
 		}
 
+		private void Awake() => _player = GetComponent<PlayerController>();
+
 		private void Start()
 		{
-			if (!PlayerPrefs.HasKey("Life")) ResetLives();
+			if (!PlayerPrefs.HasKey("Life"))
+			{
+				_maxLives = _player.Data.MaxLives;
+				ResetLives();
+			}
 
 			_lives = (byte)PlayerPrefs.GetInt("Life");
 		}
@@ -45,6 +53,6 @@ namespace Sunnyland.Game.Entities.Player
 		private void OnDestroy() => Cherries = 0;
 		private void OnApplicationQuit() => PlayerPrefs.DeleteAll();
 
-		internal static void ResetLives() => PlayerPrefs.SetInt("Life", MAX_LIVES);
+		public static void ResetLives() => PlayerPrefs.SetInt("Life", _maxLives);
 	}
 }

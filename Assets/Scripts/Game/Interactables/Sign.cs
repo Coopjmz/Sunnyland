@@ -15,7 +15,7 @@ namespace Sunnyland.Game.Interactables
 				Display("Sign", false);
 		}
 
-		internal override void Interact()
+		public override void Interact()
 		{
 			base.Interact();
 			UpdateText("Sign", _text);

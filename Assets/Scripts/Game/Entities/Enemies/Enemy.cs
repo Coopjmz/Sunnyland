@@ -5,11 +5,11 @@ namespace Sunnyland.Game.Entities.Enemies
 	abstract class Enemy : Entity
 	{
 		[Header("Stats")]
-		[SerializeField] private protected float _speed = 5f;
+		[SerializeField] protected float _speed = 5f;
 
-		private protected AudioSource DeathSFX { private get; set; }
+		protected AudioSource DeathSFX { private get; set; }
 
-		internal override void Die()
+		public override void Die()
 		{
 			//Death animation
 			enabled = false;
@@ -22,6 +22,6 @@ namespace Sunnyland.Game.Entities.Enemies
 
 		private void Death() => Destroy(gameObject);
 
-		private protected abstract void MovementUpdate();
+		protected abstract void MovementUpdate();
 	}
 }

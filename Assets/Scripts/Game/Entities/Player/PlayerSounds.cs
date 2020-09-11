@@ -9,8 +9,8 @@ namespace Sunnyland.Game.Entities.Player
 		[SerializeField] private AudioSource _jumpSFX = default;
 		[SerializeField] private AudioSource _deathSFX = default;
 
-		internal void PlayJumpSound() => _jumpSFX.Play();
-		internal void PlayDeathSound() => _deathSFX.Play();
+		public void PlayJumpSound() => _jumpSFX.Play();
+		public void PlayDeathSound() => _deathSFX.Play();
 
 		private void PlayFootstepsSound() => _footstepsSFX.Play();
     }

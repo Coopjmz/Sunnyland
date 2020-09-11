@@ -21,6 +21,6 @@ namespace Sunnyland.MainMenu.UI
 			};
 		}
 
-		internal static void Display(string key, bool enable = true) => _objects[key].SetActive(enable);
+		public static void Display(string key, bool enable = true) => _objects[key].SetActive(enable);
 	}
 }

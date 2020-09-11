@@ -5,81 +5,78 @@ namespace Sunnyland.Game.Entities.Player
 	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerMovement : MonoBehaviour
 	{
-		[SerializeField] private float _speed = 10f;
-		[SerializeField] private float _jumpForce = 40f;
-		[SerializeField] private float _climbSpeed = 5f;
-
-		private bool _crouching, _climbing;
+		private float _speed;
 
 		private PlayerController _player;
 
-		internal float JumpForce
-		{
-			get => _jumpForce;
-			set => _jumpForce = value;
-		}
+		public float JumpForce { private get; set; }
 
-		internal sbyte Xaxis { private get; set; }
-		internal sbyte Yaxis { private get; set; }
+		public sbyte Xaxis { private get; set; }
+		public sbyte Yaxis { private get; set; }
 
-		internal bool Jumping { get; set; }
-
-		internal bool Crouching
-		{
-			get => _crouching;
-			set
-			{
-				if (value)
-				{
-					_speed /= 2f;
-					_jumpForce /= 2f;
-				}
-				else
-				{
-					_speed *= 2f;
-					_jumpForce *= 2f;
-				}
-
-				_crouching = value;
-			}
-		}
-
-		internal bool Climbing
-		{
-			get => _climbing;
-			set
-			{
-				if (value)
-				{
-					transform.position = new Vector3(_player.Interact.Ladder.position.x, transform.position.y);
-					_player.Rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX |
-													RigidbodyConstraints2D.FreezeRotation;
-
-					_player.Rigidbody.drag = 20f;
-					_player.Rigidbody.gravityScale = 0f;
-
-					Xaxis = 0;
-					_player.Input.DisableJumpAndCrouch();
-				}
-				else
-				{
-					_player.Rigidbody.velocity = Vector2.zero;
-					_player.Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-					_player.Rigidbody.drag = Game.DRAG;
-					_player.Rigidbody.gravityScale = Game.GRAVITY;
-
-					_player.Input.EnableJumpAndCrouch();
-				}
-
-				_player.Interact.Ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !value;
-
-				_climbing = value;
-			}
-		}
+		public bool Jumping { private get; set; }
+		public bool Crouching { get; private set; }
+		public bool Climbing { get; private set; }
 
 		private void Awake() => _player = GetComponent<PlayerController>();
+
+		private void Start()
+		{
+			_speed = _player.Data.RunSpeed;
+			JumpForce = _player.Data.DefaultJumpForce;
+		}
+
 		private void FixedUpdate() => MovementUpdate();
+
+		public void SetCrouching(bool enabled)
+		{
+			if (enabled)
+			{
+				_speed = _player.Data.CrouchSpeed;
+				JumpForce = _player.Data.CrouchSpeed;
+			}
+			else
+			{
+				_speed = _player.Data.RunSpeed;
+				JumpForce = _player.Data.DefaultJumpForce;
+			}
+
+			Crouching = enabled;
+		}
+
+		public void SetClimbing(bool enabled)
+		{
+			if (enabled)
+			{
+				transform.position = new Vector3(_player.Interact.Ladder.position.x, transform.position.y);
+				_player.Rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX |
+															RigidbodyConstraints2D.FreezeRotation;
+
+				_player.Rigidbody.drag = 20f;
+				_player.Rigidbody.gravityScale = 0f;
+
+				_player.Input.DisableJumpAndCrouch();
+
+				Xaxis = 0;
+				_speed = _player.Data.ClimbSpeed;
+			}
+			else
+			{
+				_player.Rigidbody.velocity = Vector2.zero;
+				_player.Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+				_player.Rigidbody.drag = Game.DRAG;
+				_player.Rigidbody.gravityScale = Game.GRAVITY;
+
+				_player.Input.EnableJumpAndCrouch();
+
+				_speed = _player.Data.RunSpeed;
+			}
+
+			_player.Interact.Ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !enabled;
+
+			Climbing = enabled;
+		}
 
 		private void MovementUpdate()
 		{
@@ -99,17 +96,13 @@ namespace Sunnyland.Game.Entities.Player
 			if (Xaxis * transform.localScale.x < 0f)
 				transform.localScale = new Vector3(Xaxis * Mathf.Abs(transform.localScale.x), transform.localScale.y);
 
-			if (Climbing)
-			{
-				print("Movement climbing: false");
-				Climbing = false;
-			}
+			if (Climbing) SetClimbing(false);
 		}
 
-		internal void Jump(bool sound = true)
+		public void Jump(bool sound = true)
 		{
 			Jumping = false;
-			_player.Rigidbody.velocity = new Vector2(_player.Rigidbody.velocity.x, _jumpForce);
+			_player.Rigidbody.velocity = new Vector2(_player.Rigidbody.velocity.x, JumpForce);
 
 			if (sound) _player.Sounds.PlayJumpSound();
 		}
@@ -117,8 +110,8 @@ namespace Sunnyland.Game.Entities.Player
 		private void Climb()
 		{
 			if (Yaxis == -1 && _player.BoxCollider.IsTouchingLayers(Layers.BottomLadder))
-				Climbing = false;
-			else _player.Rigidbody.velocity = new Vector2(0f, Yaxis * _climbSpeed);
+				SetClimbing(false);
+			else _player.Rigidbody.velocity = new Vector2(0f, Yaxis * _speed);
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Sunnyland.Game.UI
 {
 	sealed class UI : MonoBehaviour
 	{
-		private static UI _ui;
+		private static UI _instance;
 
 		private static Dictionary<string, TextMeshProUGUI> _textFields;
 		private static Dictionary<string, GameObject> _objects;
@@ -34,9 +34,9 @@ namespace Sunnyland.Game.UI
 
 		private void Start()
 		{
-			if (!_ui)
+			if (!_instance)
 			{
-				_ui = this;
+				_instance = this;
 				DontDestroyOnLoad(gameObject);
 
 				_textFields = new Dictionary<string, TextMeshProUGUI>
@@ -68,14 +68,14 @@ namespace Sunnyland.Game.UI
 				TogglePauseMenu();
 		}
 
-		internal static bool IsActive(string key) => _objects[key] && _objects[key].activeSelf;
-		internal static void UpdateText(string key, object value) => _textFields[key].text = value.ToString();
-		internal static void Display(string key, bool enable = true) => _objects[key].SetActive(enable);
-		internal static void DisableTutorialText() => Destroy(_ui._tutorial);
+		public static bool IsActive(string key) => _objects[key] && _objects[key].activeSelf;
+		public static void UpdateText(string key, object value) => _textFields[key].text = value.ToString();
+		public static void Display(string key, bool enable = true) => _objects[key].SetActive(enable);
+		public static void DisableTutorialText() => Destroy(_instance._tutorial);
 
-		internal static void ResetUI()
+		public static void ResetUI()
 		{
-			Destroy(_ui.gameObject);
+			Destroy(_instance.gameObject);
 			OnStatChange -= UpdateText;
 		}
 	}

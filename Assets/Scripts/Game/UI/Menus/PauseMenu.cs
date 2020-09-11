@@ -24,7 +24,7 @@ namespace Sunnyland.Game.UI.Menus
 			};
 		}
 
-		internal static void TogglePauseMenu()
+		public static void TogglePauseMenu()
 		{
 			_paused = !_paused;
 

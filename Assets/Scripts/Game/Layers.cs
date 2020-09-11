@@ -9,10 +9,10 @@ namespace Sunnyland.Game
 		[SerializeField] private LayerMask _bottomLadder = default;
 		[SerializeField] private LayerMask _enemy = default;
 
-		internal static LayerMask Ground { get; private set; }
-		internal static LayerMask TopLadder { get; private set; }
-		internal static LayerMask BottomLadder { get; private set; }
-		internal static LayerMask Enemy { get; private set; }
+		public static LayerMask Ground { get; private set; }
+		public static LayerMask TopLadder { get; private set; }
+		public static LayerMask BottomLadder { get; private set; }
+		public static LayerMask Enemy { get; private set; }
 
 		private void Start()
 		{
