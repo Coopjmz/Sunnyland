@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using Sunnyland.Game.Map;
+
 namespace Sunnyland.Game.Entities.Player
 {
 	[RequireComponent(typeof(PlayerController))]

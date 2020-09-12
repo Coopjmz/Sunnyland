@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Sunnyland.Game
+namespace Sunnyland.Game.Map
 {
 	sealed class Layers : MonoBehaviour
 	{

@@ -1,8 +1,8 @@
-﻿namespace Sunnyland.Game.UI.Menus
+﻿namespace Sunnyland.Game.Menus
 {
 	sealed class GameOver : Menu
 	{
-		private void Start() => UI.Display("HUD", false);
+		private void Start() => UI.Instance.Display("HUD", false);
 
 		public void PlayAgain()
 		{

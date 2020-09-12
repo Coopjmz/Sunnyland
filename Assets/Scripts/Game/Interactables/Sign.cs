@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-using static Sunnyland.Game.UI.UI;
-
 namespace Sunnyland.Game.Interactables
 {
 	sealed class Sign : Interactable
@@ -12,14 +10,14 @@ namespace Sunnyland.Game.Interactables
 		{
 			base.OnTriggerExit2D(collider);
 			if (collider.CompareTag("Player"))
-				Display("Sign", false);
+				UI.Instance.Display("Sign", false);
 		}
 
 		public override void Interact()
 		{
 			base.Interact();
-			UpdateText("Sign", _text);
-			Display("Sign");
+			UI.Instance.UpdateText("Sign", _text);
+			UI.Instance.Display("Sign");
 		}
 	}
 }

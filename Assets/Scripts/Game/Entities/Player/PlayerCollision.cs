@@ -2,6 +2,7 @@
 
 using Sunnyland.Game.Interactables;
 using Sunnyland.Game.Entities.Enemies;
+using Sunnyland.Game.Map;
 
 namespace Sunnyland.Game.Entities.Player
 {

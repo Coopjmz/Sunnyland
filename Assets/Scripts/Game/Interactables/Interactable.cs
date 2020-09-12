@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-using static Sunnyland.Game.UI.UI;
-
 namespace Sunnyland.Game.Interactables
 {
 	abstract class Interactable : MonoBehaviour
@@ -12,8 +10,8 @@ namespace Sunnyland.Game.Interactables
 		{
 			if (collider.CompareTag("Player"))
 			{
-				UpdateText("Interact", _interactText);
-				Display("Interact");
+				UI.Instance.UpdateText("Interact", _interactText);
+				UI.Instance.Display("Interact");
 
 				if (Game.IsTutorialEnabled)
 					Game.DisableTutorial();
@@ -23,9 +21,9 @@ namespace Sunnyland.Game.Interactables
 		protected void OnTriggerExit2D(Collider2D collider)
 		{
 			if (collider.CompareTag("Player"))
-				Display("Interact", false);
+				UI.Instance.Display("Interact", false);
 		}
 
-		public virtual void Interact() => Display("Interact", false);
+		public virtual void Interact() => UI.Instance.Display("Interact", false);
 	}
 }

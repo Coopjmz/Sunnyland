@@ -1,4 +1,4 @@
-﻿namespace Sunnyland.MainMenu.UI.Menus
+﻿namespace Sunnyland.MainMenu.Menus
 {
 	sealed class MainMenu : Menu
 	{
@@ -6,8 +6,8 @@
 
 		public void Credits()
 		{
-			UI.Display("Main Menu", false);
-			UI.Display("Credits");
+			UI.Instance.Display("Main Menu", false);
+			UI.Instance.Display("Credits");
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using Sunnyland.Game.Input;
+using Sunnyland.Game.Map;
 
 namespace Sunnyland.Game.Entities.Player
 {

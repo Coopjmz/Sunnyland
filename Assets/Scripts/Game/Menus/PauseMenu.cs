@@ -5,7 +5,7 @@ using UnityEngine;
 
 using Sunnyland.Game.Entities.Player;
 
-namespace Sunnyland.Game.UI.Menus
+namespace Sunnyland.Game.Menus
 {
 	sealed class PauseMenu : Menu
 	{
@@ -28,7 +28,7 @@ namespace Sunnyland.Game.UI.Menus
 		{
 			_paused = !_paused;
 
-			UI.Display("Pause Menu", _paused);
+			UI.Instance.Display("Pause Menu", _paused);
 			Time.timeScale = _paused ? 0f : 1f;
 			FindObjectOfType<PlayerInput>().enabled = !_paused;
 
@@ -40,10 +40,10 @@ namespace Sunnyland.Game.UI.Menus
 			if (_paused)
 			{
 				foreach (var key in _textFieldStates.Keys.ToList())
-					if (UI.IsActive(key))
+					if (UI.Instance.IsActive(key))
 					{
 						_textFieldStates[key] = true;
-						UI.Display(key, false);
+						UI.Instance.Display(key, false);
 					}
 			}
 			else
@@ -52,7 +52,7 @@ namespace Sunnyland.Game.UI.Menus
 					if (_textFieldStates[key])
 					{
 						_textFieldStates[key] = false;
-						UI.Display(key);
+						UI.Instance.Display(key);
 					}
 			}
 		}

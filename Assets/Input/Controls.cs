@@ -1,3 +1,5 @@
+// GENERATED AUTOMATICALLY FROM 'Assets/Input/Controls.inputactions'
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,24 +8,9 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace Sunnyland.Game.Input
 {
-    sealed class @Controls : IInputActionCollection, IDisposable
+    public class @Controls : IInputActionCollection, IDisposable
     {
         public InputActionAsset asset { get; }
-
-        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-        public InputBinding? bindingMask
-        {
-            get => asset.bindingMask;
-            set => asset.bindingMask = value;
-        }
-
-        public ReadOnlyArray<InputDevice>? devices
-        {
-            get => asset.devices;
-            set => asset.devices = value;
-        }
-
         public @Controls()
         {
             asset = InputActionAsset.FromJson(@"{
@@ -179,7 +166,6 @@ namespace Sunnyland.Game.Input
     ],
     ""controlSchemes"": []
 }");
-
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -189,15 +175,49 @@ namespace Sunnyland.Game.Input
             m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         }
 
-        public void Dispose() => UnityEngine.Object.Destroy(asset);
+        public void Dispose()
+        {
+            UnityEngine.Object.Destroy(asset);
+        }
 
-        public void Enable() => asset.Enable();
-        public void Disable() => asset.Disable();
+        public InputBinding? bindingMask
+        {
+            get => asset.bindingMask;
+            set => asset.bindingMask = value;
+        }
 
-        public bool Contains(InputAction action) => asset.Contains(action);
+        public ReadOnlyArray<InputDevice>? devices
+        {
+            get => asset.devices;
+            set => asset.devices = value;
+        }
 
-        public IEnumerator<InputAction> GetEnumerator() => asset.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+        public bool Contains(InputAction action)
+        {
+            return asset.Contains(action);
+        }
+
+        public IEnumerator<InputAction> GetEnumerator()
+        {
+            return asset.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Enable()
+        {
+            asset.Enable();
+        }
+
+        public void Disable()
+        {
+            asset.Disable();
+        }
 
         // Player
         private readonly InputActionMap m_Player;
@@ -207,25 +227,20 @@ namespace Sunnyland.Game.Input
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Crouch;
         private readonly InputAction m_Player_Interact;
-
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
-            public PlayerActions(@Controls wrapper) => m_Wrapper = wrapper;
-
+            public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Climb => m_Wrapper.m_Player_Climb;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
             public InputAction @Interact => m_Wrapper.m_Player_Interact;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
-
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public void Enable() => Get().Enable();
-            public void Disable() => Get().Disable();
-
-            public static implicit operator InputActionMap(PlayerActions set) => set.Get();
-
+            public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
             public void SetCallbacks(IPlayerActions instance)
             {
                 if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
@@ -267,9 +282,7 @@ namespace Sunnyland.Game.Input
                 }
             }
         }
-
         public PlayerActions @Player => new PlayerActions(this);
-
         public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);

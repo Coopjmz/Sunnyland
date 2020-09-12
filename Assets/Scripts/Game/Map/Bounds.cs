@@ -2,7 +2,7 @@
 
 using Sunnyland.Game.Entities.Player;
 
-namespace Sunnyland.Game
+namespace Sunnyland.Game.Map
 {
 	sealed class Bounds : MonoBehaviour
 	{

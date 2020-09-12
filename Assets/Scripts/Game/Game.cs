@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 using static Sunnyland.Game.Entities.Player.PlayerStats;
-using static Sunnyland.Game.UI.UI;
 
 namespace Sunnyland.Game
 {
@@ -17,14 +16,14 @@ namespace Sunnyland.Game
 		public static void DisableTutorial()
 		{
 			IsTutorialEnabled = false;
-			DisableTutorialText();
+			UI.Instance.DisableTutorialText();
 		}
 
 		public static void GameOver()
 		{
 			IsGameOver = true;
 			GameObject.FindGameObjectWithTag("Player").SetActive(false);
-			Display("Game Over");
+			UI.Instance.Display("Game Over");
 		}
 
 		public static void Restart()
@@ -33,7 +32,7 @@ namespace Sunnyland.Game
 			IsGameOver = false;
 
 			ResetLives();
-			ResetUI();
+			UI.Instance.ResetUI();
 		}
 	}
 }
