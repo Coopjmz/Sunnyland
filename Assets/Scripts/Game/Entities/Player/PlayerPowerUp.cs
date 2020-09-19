@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+
 using UnityEngine;
 
 namespace Sunnyland.Game.Entities.Player

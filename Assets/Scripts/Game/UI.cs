@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-using static Sunnyland.Game.Entities.Player.PlayerStats;
-using static Sunnyland.Game.Menus.PauseMenu;
+using Sunnyland.Game.Entities.Player;
+using Sunnyland.Game.Menus;
 
 namespace Sunnyland.Game
 {
@@ -28,6 +28,7 @@ namespace Sunnyland.Game
 		[SerializeField] private TextMeshProUGUI _cherryCount = default;
 		[SerializeField] private TextMeshProUGUI _signText = default;
 		[SerializeField] private TextMeshProUGUI _interactText = default;
+		[SerializeField] private TextMeshProUGUI _tutorialText = default;
 
 		public static UI Instance { get; private set; }
 
@@ -53,10 +54,11 @@ namespace Sunnyland.Game
 					{"Life", _lifeCount},
 					{"Cherry", _cherryCount},
 					{"Sign", _signText},
-					{"Interact", _interactText}
+					{"Interact", _interactText},
+					{"Tutorial", _tutorialText}
 				};
 
-				OnStatChange += UpdateText;
+				PlayerStats.OnStatChange += UpdateText;
 			}
 			else Destroy(gameObject);
 		}
@@ -64,15 +66,14 @@ namespace Sunnyland.Game
 		private void Update()
 		{
 			if (Keyboard.current.escapeKey.wasPressedThisFrame && !Game.IsGameOver)
-				TogglePauseMenu();
+				PauseMenu.Toggle();
 		}
 
 		public void UpdateText(string key, object value) => _textFields[key].text = value.ToString();
-		public void DisableTutorialText() => Destroy(_tutorial);
 
 		public void ResetUI()
 		{
-			OnStatChange -= Instance.UpdateText;
+			PlayerStats.OnStatChange -= Instance.UpdateText;
 			Destroy(Instance.gameObject);
 		}
 	}

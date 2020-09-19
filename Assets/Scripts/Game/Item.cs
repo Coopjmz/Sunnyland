@@ -11,23 +11,26 @@ namespace Sunnyland.Game
 
 		private SpriteRenderer _spriteRenderer;
 		private BoxCollider2D _boxCollider;
+		private Animator _animator;
 
 		private void Awake()
 		{
 			_spriteRenderer = GetComponent<SpriteRenderer>();
 			_boxCollider = GetComponent<BoxCollider2D>();
+			_animator = GetComponent<Animator>();
 		}
 
 		private void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (collider.CompareTag("Player"))
-			{
-				_spriteRenderer.enabled = false;
-				_boxCollider.enabled = false;
-				Destroy(gameObject, _pickupSFX.clip.length);
+			if (!collider.CompareTag("Player")) return;
 
-				_pickupSFX.Play();
-			}
+			_boxCollider.enabled = false;
+			_animator.SetTrigger("Pickup");
+
+			_pickupSFX.Play();
+			Destroy(gameObject, _pickupSFX.clip.length);
 		}
+
+		private void Pickup() => _spriteRenderer.enabled = false;
 	}
 }

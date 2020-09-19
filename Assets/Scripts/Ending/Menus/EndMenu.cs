@@ -2,6 +2,6 @@
 {
 	sealed class EndMenu : Menu
 	{
-		public void PlayAgain() => SceneLoader.Load(Scene.FirstLevel);
+		public void NextLevel() => SceneLoader.Load(Scene.Next);
 	}
 }

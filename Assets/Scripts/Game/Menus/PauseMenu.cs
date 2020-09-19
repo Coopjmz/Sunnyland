@@ -11,20 +11,20 @@ namespace Sunnyland.Game.Menus
 	{
 		private static bool _paused;
 
-		private static Dictionary<string, bool> _textFieldStates;
+		private static Dictionary<string, bool> _textFieldHidden;
 
 		private void Awake()
 		{
-			_textFieldStates = new Dictionary<string, bool>
+			_textFieldHidden = new Dictionary<string, bool>
 			{
-				{"HUD", true},
-				{"Sign", false},
-				{"Interact", false},
-				{"Tutorial", false}
+				{"HUD", default},
+				{"Sign", default},
+				{"Interact", default},
+				{"Tutorial", default}
 			};
 		}
 
-		public static void TogglePauseMenu()
+		public static void Toggle()
 		{
 			_paused = !_paused;
 
@@ -39,29 +39,29 @@ namespace Sunnyland.Game.Menus
 		{
 			if (_paused)
 			{
-				foreach (var key in _textFieldStates.Keys.ToList())
+				foreach (var key in _textFieldHidden.Keys.ToList())
 					if (UI.Instance.IsActive(key))
 					{
-						_textFieldStates[key] = true;
+						_textFieldHidden[key] = true;
 						UI.Instance.Display(key, false);
 					}
 			}
 			else
 			{
-				foreach (var key in _textFieldStates.Keys.ToList())
-					if (_textFieldStates[key])
+				foreach (var key in _textFieldHidden.Keys.ToList())
+					if (_textFieldHidden[key])
 					{
-						_textFieldStates[key] = false;
+						_textFieldHidden[key] = false;
 						UI.Instance.Display(key);
 					}
 			}
 		}
 
-		public void Resume() => TogglePauseMenu();
+		public void Resume() => Toggle();
 
 		public new void ToMainMenu()
 		{
-			TogglePauseMenu();
+			Toggle();
 			Game.Restart();
 			base.ToMainMenu();
 		}
