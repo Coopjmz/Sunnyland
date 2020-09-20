@@ -72,12 +72,14 @@
     <Compile Include="Assets\Scripts\Main Menu\Menus\Credits.cs" />
     <Compile Include="Assets\Scripts\Game\Item.cs" />
     <Compile Include="Assets\Scripts\Game\Map\Layers.cs" />
+    <Compile Include="Assets\Scripts\Game\Tutorials\Tutorial.cs" />
     <Compile Include="Assets\Scripts\Main Menu\UI.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Player\PlayerAnimation.cs" />
     <Compile Include="Assets\Scripts\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Menu.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Player\PlayerInteract.cs" />
     <Compile Include="Assets\Scripts\Game\Menus\PauseMenu.cs" />
+    <Compile Include="Assets\Scripts\Game\Tutorials\TutorialManager.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Player\PlayerSounds.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Enemies\Enemy.cs" />
     <Compile Include="Assets\Scripts\Game\Interactables\Sign.cs" />
@@ -91,8 +93,7 @@
     <Compile Include="Assets\Scripts\Displayable.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Entity.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Enemies\Eagle.cs" />
-    <Compile Include="Assets\Scripts\Game\Tutorials\Tutorial.cs" />
-    <Compile Include="Assets\Scripts\Game\Tutorials\TutorialManager.cs" />
+    <Compile Include="Assets\Scripts\Game\Ladder.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

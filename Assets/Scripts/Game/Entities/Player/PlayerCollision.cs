@@ -18,7 +18,7 @@ namespace Sunnyland.Game.Entities.Player
 			if (collider.CompareTag("Interactable"))
 				_player.Interact.Interactable = collider.GetComponent<Interactable>();
 			else if (collider.CompareTag("Ladder"))
-				_player.Interact.Ladder = collider.transform;
+				_player.Interact.Ladder = collider.GetComponent<Ladder>();
 			else if (collider.CompareTag("Collectable"))
 				_player.Stats.Cherries++;
 			else if (collider.CompareTag("Power Up"))
@@ -40,19 +40,18 @@ namespace Sunnyland.Game.Entities.Player
 
 		private void OnCollisionEnter2D(Collision2D collision)
 		{
-			if (collision.gameObject.CompareTag("Enemy"))
+			if (!collision.gameObject.CompareTag("Enemy")) return;
+
+			Collider2D jumpOnEnemy = Physics2D.BoxCast(_player.BoxCollider.bounds.center,
+				_player.BoxCollider.bounds.size, 0f, Vector2.down, .1f, Layers.Enemy).collider;
+
+			if (jumpOnEnemy || _player.PowerUp.IsActive)
 			{
-				Collider2D jumpOnEnemy = Physics2D.BoxCast(_player.BoxCollider.bounds.center,
-					_player.BoxCollider.bounds.size, 0f, Vector2.down, .1f, Layers.Enemy).collider;
+				collision.gameObject.GetComponent<Enemy>().Die();
 
-				if (jumpOnEnemy || _player.PowerUp.IsActive)
-				{
-					collision.gameObject.GetComponent<Enemy>().Die();
-
-					if (jumpOnEnemy) _player.Movement.Jump(sound: false);
-				}
-				else _player.Die();
+				if (jumpOnEnemy) _player.Movement.Jump(sound: false);
 			}
+			else _player.Die();
 		}
 	}
 }

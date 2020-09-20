@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-using Sunnyland.Game.Map;
-
 namespace Sunnyland.Game.Entities.Player
 {
 	[RequireComponent(typeof(PlayerController))]
@@ -50,14 +48,15 @@ namespace Sunnyland.Game.Entities.Player
 		{
 			if (enabled)
 			{
-				transform.position = new Vector3(_player.Interact.Ladder.position.x, transform.position.y);
+				transform.position = new Vector3(_player.Interact.Ladder.transform.position.x, transform.position.y);
 				_player.Rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX |
-															RigidbodyConstraints2D.FreezeRotation;
+												RigidbodyConstraints2D.FreezeRotation;
 
 				_player.Rigidbody.drag = 20f;
 				_player.Rigidbody.gravityScale = 0f;
 
 				_player.Input.DisableJumpAndCrouch();
+				_player.Interact.Ladder.DisablePlatform();
 
 				Xaxis = 0;
 				_speed = _player.Data.ClimbSpeed;
@@ -71,11 +70,10 @@ namespace Sunnyland.Game.Entities.Player
 				_player.Rigidbody.gravityScale = Game.GRAVITY;
 
 				_player.Input.EnableJumpAndCrouch();
+				_player.Interact.Ladder.EnablePlatform();
 
 				_speed = _player.Data.RunSpeed;
 			}
-
-			_player.Interact.Ladder.GetChild(0).GetComponent<BoxCollider2D>().enabled = !enabled;
 
 			Climbing = enabled;
 		}
@@ -111,7 +109,7 @@ namespace Sunnyland.Game.Entities.Player
 
 		private void Climb()
 		{
-			if (Yaxis == -1 && _player.BoxCollider.IsTouchingLayers(Layers.BottomLadder))
+			if (Yaxis == PlayerInput.DOWN && _player.Interact.Ladder.IsTouchingLadderPart(LadderPart.Bottom))
 				SetClimbing(false);
 			else _player.Rigidbody.velocity = new Vector2(0f, Yaxis * _speed);
 		}

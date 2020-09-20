@@ -7,7 +7,7 @@ namespace Sunnyland.Game.Entities.Player
 	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerInteract : MonoBehaviour
 	{
-		public Transform Ladder { get; set; }
+		public Ladder Ladder { get; set; }
 		public Interactable Interactable { private get; set; }
 
 		public void Interact()

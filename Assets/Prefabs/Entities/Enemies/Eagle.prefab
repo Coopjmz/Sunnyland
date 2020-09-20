@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 9121093823894311384}
   - component: {fileID: 3997691565531055187}
   - component: {fileID: 2647412931898961735}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Eagle
   m_TagString: Enemy
   m_Icon: {fileID: 0}

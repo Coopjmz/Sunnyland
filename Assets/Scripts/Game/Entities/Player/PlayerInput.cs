@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 
 using Sunnyland.Game.Input;
-using Sunnyland.Game.Map;
 
 namespace Sunnyland.Game.Entities.Player
 {
 	[RequireComponent(typeof(PlayerController))]
 	sealed class PlayerInput : MonoBehaviour
 	{
-		private const sbyte UP = 1;
-		private const sbyte DOWN = -1;
+		public const sbyte UP = 1;
+		public const sbyte DOWN = -1;
 
 		private bool _holdCrouchButton;
 
@@ -96,8 +95,8 @@ namespace Sunnyland.Game.Entities.Player
 		private bool IsAbleToClimb(sbyte yAxis)
 		{
 			return !_player.Movement.Climbing && _player.Interact.Ladder &&
-				((yAxis == UP && !_player.BoxCollider.IsTouchingLayers(Layers.TopLadder)) ||
-				 (yAxis == DOWN && !_player.BoxCollider.IsTouchingLayers(Layers.BottomLadder)));
+				((yAxis == UP && !_player.Interact.Ladder.IsTouchingLadderPart(LadderPart.Top)) ||
+				 (yAxis == DOWN && !_player.Interact.Ladder.IsTouchingLadderPart(LadderPart.Bottom)));
 		}
 	}
 }

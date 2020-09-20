@@ -39299,7 +39299,7 @@ GameObject:
   - component: {fileID: 3311401572783367422}
   - component: {fileID: 1559405094}
   - component: {fileID: 3311401572783367409}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47210,18 +47210,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5885b29ef37fe944aaab6e299382881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ground:
+  _player:
     serializedVersion: 2
     m_Bits: 256
-  _topLadder:
-    serializedVersion: 2
-    m_Bits: 512
-  _bottomLadder:
-    serializedVersion: 2
-    m_Bits: 1024
   _enemy:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 512
 --- !u!1 &5133682156349026023
 GameObject:
   m_ObjectHideFlags: 0
