@@ -6,6 +6,8 @@
 
 		public void Credits()
 		{
+			UpdateDefaultButton();
+
 			UI.Instance.Display("Main Menu", false);
 			UI.Instance.Display("Credits");
 		}

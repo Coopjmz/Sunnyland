@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\Game\Map\Layers.cs" />
     <Compile Include="Assets\Scripts\Game\Tutorials\Tutorial.cs" />
     <Compile Include="Assets\Scripts\Main Menu\UI.cs" />
+    <Compile Include="Assets\Scripts\Game\Ladder.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Player\PlayerAnimation.cs" />
     <Compile Include="Assets\Scripts\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Menu.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Assets\Scripts\Displayable.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Entity.cs" />
     <Compile Include="Assets\Scripts\Game\Entities\Enemies\Eagle.cs" />
-    <Compile Include="Assets\Scripts\Game\Ladder.cs" />
+    <Compile Include="Assets\Scripts\DIsableCursor.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
