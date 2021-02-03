@@ -13,6 +13,7 @@ namespace Sunnyland.Game.Entities.Player
 
 		public sbyte Xaxis { private get; set; }
 		public sbyte Yaxis { private get; set; }
+		public Vector2 Axes { private get; set; }
 
 		public bool Jumping { private get; set; }
 		public bool Crouching { get; private set; }

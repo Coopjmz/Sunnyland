@@ -45,7 +45,7 @@ namespace Sunnyland.Game.Entities.Player
 			_controls = new Controls();
 
 			//X-axis
-			_controls.Player.Move.started += context => _player.Movement.Xaxis = (sbyte)context.ReadValue<float>();
+			_controls.Player.Move.performed += context => _player.Movement.Xaxis = (sbyte)context.ReadValue<float>();
 			_controls.Player.Move.canceled += _ => _player.Movement.Xaxis = 0;
 
 			//Y-axis

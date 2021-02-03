@@ -62,5 +62,20 @@ namespace Sunnyland.Game.Entities.Player
 
 			_player.SpriteRenderer.enabled = true;
 		}
+
+		public IEnumerator Enlarge()
+		{
+			const byte N = 5;
+			const float ENLARGE_ANIMATION_TIME = 1f / N;
+
+			float scaleModifier = (_player.Data.PowerUpScale - 1f) / N;
+
+			for (byte i = 0; i < N; i++)
+			{
+				transform.localScale = new Vector3(transform.localScale.x + scaleModifier,
+					transform.localScale.y + scaleModifier);
+				yield return new WaitForSeconds(ENLARGE_ANIMATION_TIME);
+			}
+		}
 	}
 }

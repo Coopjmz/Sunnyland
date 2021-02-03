@@ -18,9 +18,8 @@ namespace Sunnyland.Game.Entities.Player
 			IsActive = true;
 
 			_player.Movement.JumpForce = _player.Data.PowerUpJumpForce;
-			transform.localScale *= _player.Data.PowerUpScale;
-			_player.SpriteRenderer.color = Color.yellow;
 
+			StartCoroutine(_player.Animation.Enlarge());
 			StartCoroutine(Timer());
 		}
 
@@ -30,7 +29,6 @@ namespace Sunnyland.Game.Entities.Player
 
 			_player.Movement.JumpForce = _player.Data.DefaultJumpForce;
 			transform.localScale /= _player.Data.PowerUpScale;
-			_player.SpriteRenderer.color = Color.white;
 		}
 
 		private IEnumerator Timer()

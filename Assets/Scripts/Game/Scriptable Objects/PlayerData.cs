@@ -22,15 +22,19 @@ namespace Sunnyland.Game.ScriptableObjects
 		[SerializeField] private float _powerUpScale = 1.5f;
 		[SerializeField] private float _duration = 10f;
 
+		// Life
 		public byte MaxLives => _maxLives;
 
+		// Speed
 		public float RunSpeed => _runSpeed;
 		public float CrouchSpeed => _crouchSpeed;
 		public float ClimbSpeed => _climbSpeed;
 
+		// Jump Force
 		public float DefaultJumpForce => _defaultJumpForce;
 		public float CrouchJumpForce => _crouchJumpForce;
 
+		// Power Up
 		public float PowerUpJumpForce => _powerUpJumpForce;
 		public float PowerUpScale => _powerUpScale;
 		public float Duration => _duration;
