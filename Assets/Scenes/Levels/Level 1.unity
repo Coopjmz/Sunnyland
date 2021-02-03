@@ -3842,6 +3842,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1141537871}
     m_Modifications:
+    - target: {fileID: 6569960508291606604, guid: db0ce48a221177c45b3241cf60a9cec8,
+        type: 3}
+      propertyPath: _text
+      value: 'Press LEFT\RIGHT to move sideways
+
+        Press UP to jump
+
+        Press
+        DOWN to crouch'
+      objectReference: {fileID: 0}
     - target: {fileID: 7748435398968353180, guid: db0ce48a221177c45b3241cf60a9cec8,
         type: 3}
       propertyPath: m_Name
